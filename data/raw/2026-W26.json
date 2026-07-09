@@ -1,0 +1,199 @@
+{
+  "iso_week": "2026-W26",
+  "training_week": 3,
+  "window": {
+    "start": "2026-06-22T00:00:00",
+    "end": "2026-06-28T23:59:59",
+    "tz": "Europe/London"
+  },
+  "fetched_at": "2026-07-09T10:58:53.729Z",
+  "activities": [
+    {
+      "id": 19026929605,
+      "name": "To DR",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-22T19:16:12",
+      "distance_m": 4794,
+      "moving_time_s": 4010,
+      "elapsed_time_s": 7490,
+      "elevation_gain_m": 21,
+      "description": null
+    },
+    {
+      "id": 19032073686,
+      "name": "Morning Row",
+      "sport_type": "Rowing",
+      "start_date_local": "2026-06-23T08:00:18",
+      "distance_m": 4806,
+      "moving_time_s": 1207,
+      "elapsed_time_s": 1207,
+      "elevation_gain_m": 0,
+      "description": null
+    },
+    {
+      "id": 19031918733,
+      "name": "20:00 row 🥵",
+      "sport_type": "Rowing",
+      "start_date_local": "2026-06-23T08:02:00",
+      "distance_m": 4501,
+      "moving_time_s": 1200,
+      "elapsed_time_s": 1200,
+      "elevation_gain_m": 0,
+      "description": null
+    },
+    {
+      "id": 19046624453,
+      "name": "Morning Weight Training",
+      "sport_type": "WeightTraining",
+      "start_date_local": "2026-06-24T08:02:50",
+      "distance_m": 0,
+      "moving_time_s": 2843,
+      "elapsed_time_s": 2843,
+      "elevation_gain_m": 0,
+      "description": null
+    },
+    {
+      "id": 19049256795,
+      "name": "Afternoon Walk 🫠",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-24T13:39:21",
+      "distance_m": 2882,
+      "moving_time_s": 1969,
+      "elapsed_time_s": 2604,
+      "elevation_gain_m": 5,
+      "description": null
+    },
+    {
+      "id": 19053452031,
+      "name": "Afternoon Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-24T17:34:57",
+      "distance_m": 4841,
+      "moving_time_s": 4511,
+      "elapsed_time_s": 10632,
+      "elevation_gain_m": 5,
+      "description": null
+    },
+    {
+      "id": 19063432001,
+      "name": "Afternoon Walk 🇫🇮",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-25T16:40:49",
+      "distance_m": 4444,
+      "moving_time_s": 3947,
+      "elapsed_time_s": 8820,
+      "elevation_gain_m": 60,
+      "description": null
+    },
+    {
+      "id": 19074469501,
+      "name": "Exploring Lahti 🚲",
+      "sport_type": "Ride",
+      "start_date_local": "2026-06-26T14:40:24",
+      "distance_m": 18290,
+      "moving_time_s": 6404,
+      "elapsed_time_s": 10658,
+      "elevation_gain_m": 136,
+      "description": null
+    },
+    {
+      "id": 19075358663,
+      "name": "Afternoon Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-26T17:54:07",
+      "distance_m": 2712,
+      "moving_time_s": 2266,
+      "elapsed_time_s": 4772,
+      "elevation_gain_m": 34,
+      "description": "Bib number pickup #the50kthatwasntobe"
+    },
+    {
+      "id": 19081627139,
+      "name": "Morning Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-27T08:51:02",
+      "distance_m": 2924,
+      "moving_time_s": 1961,
+      "elapsed_time_s": 2177,
+      "elevation_gain_m": 9,
+      "description": null
+    },
+    {
+      "id": 19081627225,
+      "name": "Lahti parkrun 💥🍒",
+      "sport_type": "Run",
+      "start_date_local": "2026-06-27T09:31:34",
+      "distance_m": 5024,
+      "moving_time_s": 1983,
+      "elapsed_time_s": 1983,
+      "elevation_gain_m": 0,
+      "description": "Believe that's a DR bingo. Edit: It's not 😂"
+    },
+    {
+      "id": 19082238989,
+      "name": "Morning Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-27T10:21:18",
+      "distance_m": 2794,
+      "moving_time_s": 2131,
+      "elapsed_time_s": 2789,
+      "elevation_gain_m": 34,
+      "description": null
+    },
+    {
+      "id": 19087928461,
+      "name": "Afternoon Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-27T14:41:02",
+      "distance_m": 7403,
+      "moving_time_s": 5644,
+      "elapsed_time_s": 16193,
+      "elevation_gain_m": 63,
+      "description": "Half the day spent in a coffee shop / microbrewery. Cheers for the heads-up Dave Scattergood 👌"
+    },
+    {
+      "id": 19097091660,
+      "name": "Ultra X Finland",
+      "sport_type": "TrailRun",
+      "start_date_local": "2026-06-28T11:00:10",
+      "distance_m": 24599,
+      "moving_time_s": 11212,
+      "elapsed_time_s": 11675,
+      "elevation_gain_m": 530.2,
+      "description": "Everything hurts below the waist 😂 Bit of a jump in distance over what I've been doing recently, fine up to 10 miles but got progressively harder 😅. Loved running through these forests though. Calf held up. Huuuuuuuumid! "
+    },
+    {
+      "id": 19097716713,
+      "name": "Post-race Recovery Waddle 🚂",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-28T14:22:29",
+      "distance_m": 2558,
+      "moving_time_s": 1716,
+      "elapsed_time_s": 2466,
+      "elevation_gain_m": 62,
+      "description": "To the train station "
+    },
+    {
+      "id": 19099506065,
+      "name": "Seeking Falafel",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-28T16:15:55",
+      "distance_m": 1785,
+      "moving_time_s": 1569,
+      "elapsed_time_s": 4451,
+      "elevation_gain_m": 31,
+      "description": "Mission accomplished. With halloumi, salad and tzatziki 👌 Must have been like watching the Cookie Monster eat."
+    },
+    {
+      "id": 19100161677,
+      "name": "Afternoon Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-28T17:49:44",
+      "distance_m": 1304,
+      "moving_time_s": 1125,
+      "elapsed_time_s": 2338,
+      "elevation_gain_m": 28,
+      "description": null
+    }
+  ]
+}

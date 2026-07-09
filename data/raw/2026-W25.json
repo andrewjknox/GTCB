@@ -1,0 +1,122 @@
+{
+  "iso_week": "2026-W25",
+  "training_week": 2,
+  "window": {
+    "start": "2026-06-15T00:00:00",
+    "end": "2026-06-21T23:59:59",
+    "tz": "Europe/London"
+  },
+  "fetched_at": "2026-07-09T10:58:53.729Z",
+  "activities": [
+    {
+      "id": 18926618817,
+      "name": "Morning Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-15T08:46:04",
+      "distance_m": 8498,
+      "moving_time_s": 5318,
+      "elapsed_time_s": 9200,
+      "elevation_gain_m": 142,
+      "description": null
+    },
+    {
+      "id": 18927288354,
+      "name": "Lunch Swim",
+      "sport_type": "Swim",
+      "start_date_local": "2026-06-15T12:33:15",
+      "distance_m": 396,
+      "moving_time_s": 315,
+      "elapsed_time_s": 782,
+      "elevation_gain_m": 0,
+      "description": null
+    },
+    {
+      "id": 18939268545,
+      "name": "Morning Ride ☕",
+      "sport_type": "Ride",
+      "start_date_local": "2026-06-16T06:59:30",
+      "distance_m": 32586,
+      "moving_time_s": 5869,
+      "elapsed_time_s": 7760,
+      "elevation_gain_m": 491,
+      "description": "Quick blast before work"
+    },
+    {
+      "id": 18954178722,
+      "name": "Morning Hike Reps x 3",
+      "sport_type": "Hike",
+      "start_date_local": "2026-06-17T06:39:02",
+      "distance_m": 12652,
+      "moving_time_s": 10300,
+      "elapsed_time_s": 10595,
+      "elevation_gain_m": 1115,
+      "description": "⛰️ Alt del Governador (1,427 ft) | 🌐 summitbag.com"
+    },
+    {
+      "id": 18975987427,
+      "name": "Evening Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-18T19:01:17",
+      "distance_m": 3399,
+      "moving_time_s": 2913,
+      "elapsed_time_s": 9736,
+      "elevation_gain_m": 72,
+      "description": null
+    },
+    {
+      "id": 18981610442,
+      "name": "Morning Ride",
+      "sport_type": "Ride",
+      "start_date_local": "2026-06-19T07:44:50",
+      "distance_m": 34001,
+      "moving_time_s": 6426,
+      "elapsed_time_s": 11636,
+      "elevation_gain_m": 613,
+      "description": null
+    },
+    {
+      "id": 18993430073,
+      "name": "Alderley parkrun 💥🍒",
+      "sport_type": "TrailRun",
+      "start_date_local": "2026-06-20T09:01:51",
+      "distance_m": 5015,
+      "moving_time_s": 2098,
+      "elapsed_time_s": 2104,
+      "elevation_gain_m": 49,
+      "description": "Run/walk. Maybe my favourite parkrun? Match  parkrun challenge ✅"
+    },
+    {
+      "id": 18998933971,
+      "name": "Afternoon Weight Training",
+      "sport_type": "WeightTraining",
+      "start_date_local": "2026-06-20T15:51:30",
+      "distance_m": 0,
+      "moving_time_s": 3026,
+      "elapsed_time_s": 3026,
+      "elevation_gain_m": 0,
+      "description": null
+    },
+    {
+      "id": 19007323381,
+      "name": "Bowden Bridge to Kinder Downfall",
+      "sport_type": "TrailRun",
+      "start_date_local": "2026-06-21T07:44:20",
+      "distance_m": 15651,
+      "moving_time_s": 10100,
+      "elapsed_time_s": 10201,
+      "elevation_gain_m": 639,
+      "description": "Been a while since I've been in the Peaks, awesome morning. ⛰️ Mill Hill (1,785 ft) • ⛰️ The Edge (2,070 ft) | 🌐 summitbag.com"
+    },
+    {
+      "id": 19015757962,
+      "name": "DR Crazy Cow Cafe BBQ 🌭🍺",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-21T18:53:14",
+      "distance_m": 5462,
+      "moving_time_s": 3514,
+      "elapsed_time_s": 14905,
+      "elevation_gain_m": 8,
+      "description": null
+    }
+  ]
+}

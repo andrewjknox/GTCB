@@ -1,0 +1,111 @@
+{
+  "iso_week": "2026-W27",
+  "training_week": 4,
+  "window": {
+    "start": "2026-06-29T00:00:00",
+    "end": "2026-07-05T23:59:59",
+    "tz": "Europe/London"
+  },
+  "fetched_at": "2026-07-09T10:58:53.729Z",
+  "activities": [
+    {
+      "id": 19111127216,
+      "name": "Lunch Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-29T11:10:13",
+      "distance_m": 13849,
+      "moving_time_s": 11594,
+      "elapsed_time_s": 23104,
+      "elevation_gain_m": 154,
+      "description": null
+    },
+    {
+      "id": 19124475671,
+      "name": "Lunch Walk 🐿️🐦🥜",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-30T12:02:52",
+      "distance_m": 9068,
+      "moving_time_s": 6961,
+      "elapsed_time_s": 19453,
+      "elevation_gain_m": 121,
+      "description": "Feeding red squirrels and birds from my hand! Wee bastard bit my thumb after running out of nuts 😂"
+    },
+    {
+      "id": 19126552485,
+      "name": "Evening Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-06-30T19:18:11",
+      "distance_m": 2577,
+      "moving_time_s": 2110,
+      "elapsed_time_s": 3869,
+      "elevation_gain_m": 37,
+      "description": null
+    },
+    {
+      "id": 19147103089,
+      "name": "Morning Weight Training",
+      "sport_type": "WeightTraining",
+      "start_date_local": "2026-07-02T07:42:39",
+      "distance_m": 0,
+      "moving_time_s": 2098,
+      "elapsed_time_s": 2098,
+      "elevation_gain_m": 0,
+      "description": null
+    },
+    {
+      "id": 19147000743,
+      "name": "20:00 row",
+      "sport_type": "Rowing",
+      "start_date_local": "2026-07-02T08:20:00",
+      "distance_m": 4471,
+      "moving_time_s": 1200,
+      "elapsed_time_s": 1200,
+      "elevation_gain_m": 0,
+      "description": null
+    },
+    {
+      "id": 19165121664,
+      "name": "Afternoon Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-07-03T15:51:33",
+      "distance_m": 3320,
+      "moving_time_s": 2278,
+      "elapsed_time_s": 3918,
+      "elevation_gain_m": 31,
+      "description": null
+    },
+    {
+      "id": 19172607098,
+      "name": "To parkrun",
+      "sport_type": "Walk",
+      "start_date_local": "2026-07-04T08:38:04",
+      "distance_m": 1960,
+      "moving_time_s": 1169,
+      "elapsed_time_s": 1194,
+      "elevation_gain_m": 0,
+      "description": null
+    },
+    {
+      "id": 19172607556,
+      "name": "FM parkrun",
+      "sport_type": "Run",
+      "start_date_local": "2026-07-04T09:01:25",
+      "distance_m": 5117,
+      "moving_time_s": 2007,
+      "elapsed_time_s": 2007,
+      "elevation_gain_m": 31,
+      "description": "Celebrating Yusuf L 🎽 30th 🧁👶"
+    },
+    {
+      "id": 19185863540,
+      "name": "Morning Trail Run",
+      "sport_type": "TrailRun",
+      "start_date_local": "2026-07-05T07:01:58",
+      "distance_m": 21135,
+      "moving_time_s": 10649,
+      "elapsed_time_s": 10844,
+      "elevation_gain_m": 864,
+      "description": "⛰️ Win Hill (1,520 ft) • ⛰️ Crook Hill (1,253 ft) • ⛰️ Ladycrook Hill (1,227 ft) • ⛰️ Bamford Moor (1,398 ft) | 🌐 summitbag.com"
+    }
+  ]
+}
