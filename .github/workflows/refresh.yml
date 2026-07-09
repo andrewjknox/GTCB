@@ -1,0 +1,119 @@
+# refresh.yml — scheduled + on-demand headless run of the GTCB dashboard pipeline.
+#
+# ── Strava MCP caveat (IMPORTANT) ─────────────────────────────────────────────
+# Interactive sessions use claude.ai-managed Strava OAuth, which is NOT available
+# headless on a CI runner. Until a Strava MCP server is configured on the runner
+# with its own token (see TODO at the "Configure Strava MCP" step below — e.g. a
+# STRAVA_REFRESH_TOKEN repo secret + `claude mcp add`), this workflow tolerates
+# its absence: it SKIPS the data-agent fetch and recomputes everything from the
+# raw data already committed in data/raw/ (analyst → builder → reviewer, gates
+# A–D still run — Gate A validates the committed raw files). The workflow is
+# therefore useful immediately; adding the token upgrades it to a full refresh.
+#
+# Schedule: cron is UTC. 05:30 Mon/Thu and 20:30 Sun approximate the intended
+# Europe/London times and drift by 1h across BST/GMT transitions — acceptable.
+
+name: refresh
+
+on:
+  schedule:
+    - cron: "30 5 * * 1,4"   # Mon + Thu 05:30 UTC (~05:30/06:30 London)
+    - cron: "30 20 * * 0"    # Sun 20:30 UTC (~20:30/21:30 London)
+  workflow_dispatch:
+    inputs:
+      note:
+        description: "Optional note for the run (e.g. mid-week)"
+        required: false
+        default: ""
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+        # No npm install: gate scripts are dependency-free Node;
+        # html-validate arrives via `npx --yes` inside Gate C.
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Configure Strava MCP (TODO — required for headless data fetch)
+        id: strava
+        env:
+          STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+        run: |
+          # TODO: when a STRAVA_REFRESH_TOKEN secret (plus client id/secret) is
+          # added, configure a Strava MCP server here so the data-agent can
+          # fetch, e.g.:
+          #   claude mcp add strava -- npx -y <strava-mcp-package>
+          # Until then we skip the data-agent and reuse committed raw data.
+          if [ -n "${STRAVA_REFRESH_TOKEN}" ]; then
+            # Token exists but the MCP server config above is still a TODO, so
+            # the fetch cannot work yet. Flip this to true once `claude mcp add`
+            # is wired in.
+            echo "Strava token present, but MCP server config is still a TODO — data-agent will be skipped."
+            echo "strava_enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "No STRAVA_REFRESH_TOKEN secret — data-agent will be skipped."
+            echo "strava_enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run pipeline headless
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          STRAVA_ENABLED: ${{ steps.strava.outputs.strava_enabled }}
+        run: |
+          claude -p "Read CLAUDE.md fully and obey every invariant. Run the GTCB pipeline for the current week (Europe/London, Mon-Sun). STRAVA_ENABLED=${STRAVA_ENABLED}: if it is not 'true', SKIP the data-agent fetch entirely and recompute from the raw files already committed in data/raw/. Chain: (1) if enabled, data-agent fetches the current week to data/raw/, then run 'bash .claude/hooks/gate-a-raw.sh' and require exit 0; (2) analyst-agent recomputes data/summary/ for every raw week and updates data/summary/index.json, then 'bash .claude/hooks/gate-b-summary.sh' must exit 0; (3) builder-agent refreshes site/ including byte-identical copies of data/plan.json and data/summary/* under site/data/, then 'bash .claude/hooks/gate-c-build.sh' must exit 0; (4) reviewer-agent audits the run and you save its verdict JSON verbatim to data/review/<iso-week>.json, then 'bash .claude/hooks/gate-d-review.sh' must exit 0. If any gate exits non-zero, stop and fail loudly. Do NOT commit or push — CI handles that. Only files under data/ and site/ may change." \
+            --permission-mode acceptEdits \
+            --allowedTools "Read,Write,Edit,Bash,Glob,Grep,Task,Agent"
+
+      # Belt-and-braces: CI must not trust the agent to have run its own gates.
+      - name: Gate A — raw data
+        run: bash .claude/hooks/gate-a-raw.sh
+
+      - name: Gate B — summaries reconcile
+        run: bash .claude/hooks/gate-b-summary.sh
+
+      - name: Gate C — site build
+        run: bash .claude/hooks/gate-c-build.sh
+
+      - name: Gate D — reviewer verdict
+        run: bash .claude/hooks/gate-d-review.sh
+
+      - name: Compute commit message
+        id: msg
+        run: |
+          ISO_WEEK=$(TZ=Europe/London date +%G-W%V)
+          DOW=$(TZ=Europe/London date +%u)   # 1=Mon .. 7=Sun
+          SUFFIX=""
+          if [ "$DOW" != "7" ]; then SUFFIX=" (mid-week)"; fi
+          NOTE="${{ github.event.inputs.note }}"
+          if [ -n "$NOTE" ]; then SUFFIX=" ($NOTE)"; fi
+          echo "message=refresh: ${ISO_WEEK}${SUFFIX}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data site
+          if git diff --cached --quiet; then
+            echo "No changes to commit — skipping."
+          else
+            git commit -m "${{ steps.msg.outputs.message }}"
+            git push
+          fi
