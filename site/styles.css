@@ -595,6 +595,23 @@ tr.race td { color: #FFFFFF; font-weight: bold; }
 
 .rehab-warning strong { color: #FF897D; }
 
+.rehab-warning ul { list-style: none; }
+
+.rehab-warning li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 6px;
+}
+
+.rehab-warning li:last-child { margin-bottom: 0; }
+
+.rehab-warning li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #DB6559;
+}
+
 /* venues page */
 
 .tier-badge {
@@ -701,6 +718,147 @@ tr.race td { color: #FFFFFF; font-weight: bold; }
   letter-spacing: 0.08em;
   margin: 0 2px 14px;
 }
+
+/* strength page */
+
+.tag-priority { background: #DB6559; }
+.tag-singleleg { background: #3EB849; }
+.tag-posterior { background: #CCC35E; }
+.tag-lateral { background: #B766B5; }
+.tag-trunk { background: #65DBEF; }
+.tag-calf { background: #FF897D; }
+
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+}
+
+.ex-card {
+  border: 1px solid #5955E0;
+  padding: 10px 12px;
+}
+
+.ex-card.bucket-a { border-left: 3px solid #DB6559; }
+.ex-card.bucket-b { border-left: 3px solid #3EB849; }
+.ex-card.bucket-c { border-left: 3px solid #CCC35E; }
+.ex-card.bucket-d { border-left: 3px solid #65DBEF; }
+.ex-card.bucket-e { border-left: 3px solid #B95E51; }
+
+.ex-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-bottom: 4px;
+}
+
+.ex-head h3 {
+  color: #74D07D;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ex-code {
+  color: #000000;
+  background: #8076F1;
+  font-weight: bold;
+  padding: 0 5px;
+  margin-right: 8px;
+}
+
+.ex-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.ex-lede {
+  color: #8076F1;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.ex-spec {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+  border: 1px solid #5955E0;
+  padding: 5px 9px;
+  margin-bottom: 8px;
+}
+
+.ex-spec dt {
+  color: #8076F1;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ex-spec dd {
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.ex-detail div { margin-bottom: 6px; }
+.ex-detail div:last-child { margin-bottom: 0; }
+
+.ex-detail dt {
+  color: #CCC35E;
+  font-weight: bold;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ex-detail dd { color: #CCCCCC; font-size: 12px; }
+
+.effer-note {
+  border: 2px solid #B95E51;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.effer-note-title {
+  color: #FF897D;
+  font-weight: bold;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+
+.doc-section .effer-note p { margin-bottom: 4px; font-size: 12px; }
+.doc-section .effer-note p:last-child { margin-bottom: 0; }
+
+.effer-note strong { color: #FF897D; }
+
+.tpl-block { margin-bottom: 18px; }
+.tpl-block:last-child { margin-bottom: 0; }
+
+.tpl-block h3 {
+  color: #74D07D;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.tpl-meta {
+  color: #8076F1;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.tpl-table { min-width: 560px; }
+.notation-table { min-width: 520px; }
+.phase-map-table { min-width: 720px; }
+
+.tpl-table th, .tpl-table td,
+.notation-table th, .notation-table td,
+.phase-map-table th, .phase-map-table td { text-align: left; }
 
 /* under construction (stub pages) */
 
