@@ -2,6 +2,7 @@
 name: builder-agent
 description: Regenerates the static dashboard in site/ from data/summary + data/plan.json. TMS9918 palette, Canvas charts, relative URLs only.
 model: claude-fable-5
+color: green
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 

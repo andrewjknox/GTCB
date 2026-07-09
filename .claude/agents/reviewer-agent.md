@@ -2,6 +2,7 @@
 name: reviewer-agent
 description: Read-only auditor. Checks pipeline output against CLAUDE.md invariants and returns a structured verdict JSON.
 model: sonnet
+color: purple
 tools: Read, Grep, Glob
 ---
 

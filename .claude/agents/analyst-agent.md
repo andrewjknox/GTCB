@@ -2,6 +2,7 @@
 name: analyst-agent
 description: Computes weekly summary (vert vs plan, time on feet, flags) from raw data. Writes data/summary/ only.
 model: sonnet
+color: yellow
 tools: Read, Write
 ---
 

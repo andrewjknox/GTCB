@@ -2,6 +2,7 @@
 name: data-agent
 description: Fetches Strava activities for a given Mon-Sun window and writes raw JSON to data/raw/. No analysis, no opinions.
 model: haiku
+color: cyan
 tools: mcp__claude_ai_Strava__health, mcp__claude_ai_Strava__list_activities, Read, Write
 ---
 
