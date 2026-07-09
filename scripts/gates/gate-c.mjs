@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Gate C — validates the built site/ against CLAUDE.md invariants:
 // HTML validity, relative URLs only, TMS9918 palette lockdown, data fidelity,
-// metric fields consumed, git diff scope, non-empty index.html.
+// metric fields consumed, git diff scope, non-empty index.html, minified JS shipped.
 // Dependency-free Node (html-validate is spawned via npx). Exit 0 = pass, 2 = block.
 
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
@@ -175,6 +175,31 @@ if (!existsSync(SITE_DIR)) {
   if (!existsSync(p)) errs.push(`${p} does not exist`);
   else if (statSync(p).size === 0) errs.push(`${p} is empty`);
   report("check-7 index-html", errs);
+}
+
+// ---------- check 8: minified JS shipped and wired up ----------
+{
+  const errs = [];
+  const src = join(SITE_DIR, "app.js");
+  const min = join(SITE_DIR, "app.min.js");
+  const html = join(SITE_DIR, "index.html");
+  if (!existsSync(min)) {
+    errs.push(`${min} does not exist — run scripts/build/minify.mjs`);
+  } else if (statSync(min).size === 0) {
+    errs.push(`${min} is empty`);
+  } else if (existsSync(src) && statSync(min).size >= statSync(src).size) {
+    errs.push(`${min} is not smaller than ${src} — minify likely did not run`);
+  }
+  if (existsSync(html)) {
+    const page = readFileSync(html, "utf8");
+    if (!page.includes("app.min.js")) {
+      errs.push(`${html} does not reference app.min.js`);
+    }
+    if (/<script[^>]+src=["']\.?\/?app\.js["']/.test(page)) {
+      errs.push(`${html} still loads unminified app.js`);
+    }
+  }
+  report("check-8 minified-js", errs);
 }
 
 process.exit(results.every(Boolean) ? 0 : 2);

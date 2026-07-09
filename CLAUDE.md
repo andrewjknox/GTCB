@@ -8,6 +8,7 @@ Project memory for all agents working in this repo. Read this before doing any w
 2. Data flows one direction: raw → summary → site. Builder never reads Strava; analyst never writes HTML.
 3. TMS9918 palette only in site/ styling (hex values below).
 3a. Site is served at a subpath (target: knoxy.com/gtcb/), never at root. All URLs in site/ must be relative — `/app.js` is a bug; `./app.js` or `app.js` is correct. Gate C greps for `href="/` and `src="/` and blocks on any hit.
+3b. `site/app.js` is the source of truth; the page loads the generated `site/app.min.js` (`app.min.js` convention). The builder regenerates it via `node scripts/build/minify.mjs` (esbuild through npx) as the final build step; Gate C check-8 blocks if it is missing, stale, or if `index.html` still loads the unminified `app.js`.
 4. All dates/windows computed Europe/London; week = Mon 00:00 → Sun 23:59.
 5. Plan targets live in `data/plan.json` (per-week vert targets, phase labels W1–23) — hand-maintained, agents read-only.
 6. No secrets in repo. Strava auth via MCP; OpenAI key via env.
