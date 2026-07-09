@@ -16,9 +16,13 @@
 name: refresh
 
 on:
-  schedule:
-    - cron: "30 5 * * 1,4"   # Mon + Thu 05:30 UTC (~05:30/06:30 London)
-    - cron: "30 20 * * 0"    # Sun 20:30 UTC (~20:30/21:30 London)
+  # Scheduled auto-refresh DISABLED 2026-07-09 by owner to avoid metered
+  # ANTHROPIC_API_KEY costs (headless runs bill per-token, separate from the
+  # Claude subscription). Refreshes are done on demand via a Claude Code chat
+  # session instead. Re-enable by uncommenting the cron lines below.
+  # schedule:
+  #   - cron: "30 5 * * 1,4"   # Mon + Thu 05:30 UTC (~05:30/06:30 London)
+  #   - cron: "30 20 * * 0"    # Sun 20:30 UTC (~20:30/21:30 London)
   workflow_dispatch:
     inputs:
       note:
