@@ -1,0 +1,24 @@
+{
+  "iso_week": "2026-W26",
+  "training_week": 3,
+  "phase": "Base",
+  "generated_at": "2026-07-09T12:00:00Z",
+  "window": { "start": "2026-06-22T00:00:00", "end": "2026-06-28T23:59:59", "tz": "Europe/London" },
+  "days_elapsed": 7,
+  "vert": { "actual_m": 882.2, "target_m": 1000, "prorated_target_m": 1000, "pct_of_target": 88, "pct_of_prorated": 88 },
+  "time_on_feet": { "actual_s": 44044 },
+  "distance": { "actual_m": 68064 },
+  "sessions": { "count": 17, "on_foot_count": 13 },
+  "daily": [
+    { "date": "2026-06-22", "vert_m": 21, "time_s": 4010, "distance_m": 4794 },
+    { "date": "2026-06-23", "vert_m": 0, "time_s": 0, "distance_m": 0 },
+    { "date": "2026-06-24", "vert_m": 10, "time_s": 6480, "distance_m": 7723 },
+    { "date": "2026-06-25", "vert_m": 60, "time_s": 3947, "distance_m": 4444 },
+    { "date": "2026-06-26", "vert_m": 34, "time_s": 2266, "distance_m": 2712 },
+    { "date": "2026-06-27", "vert_m": 106, "time_s": 11719, "distance_m": 18145 },
+    { "date": "2026-06-28", "vert_m": 651.2, "time_s": 15622, "distance_m": 30246 }
+  ],
+  "flags": [
+    { "type": "calf", "detail": "\"Calf held up.\" — \"Ultra X Finland\", 2026-06-28" }
+  ]
+}

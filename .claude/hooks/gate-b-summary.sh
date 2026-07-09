@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
-# Gate B — implemented in phase 3. Stub passes.
-echo "gate-B: stub (not yet implemented)"
-exit 0
+# Gate B — validates data/summary/*.json via scripts/gates/gate-b.mjs.
+set -u
+cd "$(dirname "${BASH_SOURCE[0]}")/../.." || exit 2
+node scripts/gates/gate-b.mjs
+exit $?
