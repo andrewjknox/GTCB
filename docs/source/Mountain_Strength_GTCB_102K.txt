@@ -1,0 +1,425 @@
+
+
+STRENGTH TRAINING REFERENCE
+Mountain
+Strength
+A working library and session templates for the
+road to the Gran Trail Costa Blanca 102K — built
+around descents, vert, and a left chain that needs
+respect.
+Target race
+GTCB 102K · 6,280m+
+Start
+Fri 13 Nov 2026, 23:00
+One session / week
+Pairs with erg day
+
+How to use this book
+A finish-focused mountain ultra is won by legs that still brake on the descents at hour 18 and a body that
+stays upright and loaded for 24 hours. This strength work serves that — not aesthetics, not max numbers.
+READ THIS FIRST — THE NON-NEGOTIABLE
+Alex Effer's prescribed corrective work is the backbone of your lower-leg and left-chain training. This
+book is a general strength supplement that sits around his rehab, never over the top of it. Where
+exercises here touch the calf or the left kinetic chain (foot → tibia → hip → knee → calf), his guidance
+wins every time. Run any new calf loading past him before adding volume — your working picture is
+plantarflexor hyperexcitability / EAMC, not a tissue you simply load harder. 
+The principles
+One quality session per week, ~45–55 min including warm-up, on your erg/rowing day. Rowing is
+general aerobic and posterior-biased, so strength rounds out what the erg misses: single-leg control,
+eccentric braking, lateral chain, trunk endurance.
+Rotate the emphasis week to week (Templates 1 → 2 → 3 → repeat). Because it's only once weekly,
+each session is full-body with a different lean, not a body-part split.
+Eccentric / descent-protective work is the priority bucket. If a session gets cut short, keep
+those movements.
+Quality over load. Leave 2–3 reps in reserve (RIR). You're building durable tissue and control, not
+chasing a 1RM. Sore legs must not compromise the Friday Peak day.
+Periodise down into the race. Heaviest in base (Jun–Aug), trimmed through build, maintenance-
+only from ~mid-Oct so it never blunts your peak mountain weeks.
+Never stack heavy lower-body the day before a long Peak day. Keep strength early-week.
+Reading the prescriptions
+NotationMeaning
+3 × 8 / leg
+3 sets of 8 repetitions on each leg
+Tempo 3-1-1-0
+Seconds for each phase: lowering (eccentric) – pause at bottom – lifting –
+pause at top. A high first number = slow, controlled lowering, which is the
+descent-protective stimulus.
+RIR 2–3
+Reps In Reserve — stop with 2–3 good reps left in the tank. Never grind to failure.
+Iso :45
+Isometric hold for 45 seconds
+Warm-up (every session, ~6–8 min)
+2–3 min easy on the erg you just finished, or a brisk walk, to stay warm.
+Effer's activation/breathing drills if prescribed for that day — these come first  .
+Glute activation: banded clamshells + glute bridges, ~15 reps each, to set the glute → hamstring
+→ calf    firing order before loading.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+Mountain Strength · GTCB 102K Build
+2
+
+5–8 bodyweight reps of the session's first main lift as a primer set.• 
+Mountain Strength · GTCB 102K Build
+3
+
+Exercise library
+Reference for every movement used in the templates. Tags show the primary purpose; doses are starting
+points for the base phase — progress per the rules at the back.
+A · Descent-protective & eccentric priority bucket
+Eccentric split squatA1
+PRIORITYSINGLE-LEG
+The single best gym mimic of descending: loaded knee flexion under a slow, controlled lower. Builds
+quads' braking capacity so they survive 6,280m of downhill.
+Setup: Split stance, rear foot on the floor (or lightly on a low bench). Torso tall, weight through the front
+mid-foot.
+Execution: Lower slowly and under control, front knee tracking over toes, until the front thigh is near
+parallel. Drive up at normal speed. The lowering is the whole point.
+TEMPO
+4-1-1-0
+DOSE
+3 × 6–8 / leg
+PROGRESS
+Hold dumbbells → slower eccentric
+Watch: Keep the knee stable, no inward collapse — that's your left-chain pattern showing up. Stop the
+set if control goes.
+Step-down (forward & lateral)A2
+PRIORITYSINGLE-LEG
+Directly trains the controlled, single-leg lowering of a downhill foot-plant, plus the hip/knee control that
+stops the left knee hyperextending and the foot over-pronating.
+Setup: Stand on a step/box (start ~15 cm, build height). One leg working, other leg hanging off the
+edge.
+Execution: Slowly lower the free heel toward the floor by bending the standing leg — tap lightly, don't
+dump weight onto it — then control back up. Lateral version: step off to the side to load the hip
+abductors / lateral chain.
+TEMPO
+3-1-1-0
+DOSE
+3 × 8 / leg
+PROGRESS
+Higher box → light DB
+Watch: Hips level (no drop on the free side), knee over mid-foot. This is a control drill before it's a
+strength drill.
+Mountain Strength · GTCB 102K Build
+4
+
+Spanish squat (isometric)A3
+PRIORITY
+Knee-friendly quad loading with low joint stress — builds tendon-tolerant quad strength without the
+impact, useful when legs are already loaded from hill days.
+Setup: Loop a stout band around a fixed post and behind both knees. Lean back into the band, feet
+planted.
+Execution: Sit back into a squat (~60–90° knee bend) with shins vertical and hold. Quads do the work;
+the band takes the shear.
+HOLD
+Iso :30–:45
+DOSE
+4–5 holds
+PROGRESS
+Add held weight / longer hold
+Reverse NordicA4
+PRIORITY
+Loaded eccentric lengthening of the quads through a big range — potent protection against late-race
+downhill quad blow-up. Advanced; ease in.
+Setup: Kneel tall on a pad, knees hip-width, torso and hips in one line.
+Execution: Keeping a straight line from knee to head, lean back slowly under control as far as you can
+hold, then return. Small range first; build over weeks.
+TEMPO
+4-0-2-0
+DOSE
+2–3 × 5–8
+PROGRESS
+Greater lean angle
+Watch: No hinging at the hip (don't fold) and no lower-back arch. Quads only. Start tiny — this gets sore.
+Eccentric heel dropA5
+CALF · CHECK EFFER
+Classic calf/Achilles eccentric loading. Relevant to descending and push-off — but this is exactly the tissue
+under your working diagnosis.
+EFFER GOVERNS THIS ONE
+Do not add eccentric calf loading on your own initiative. Use only the heel-drop volume, range
+and frequency Effer has set, and the cues he's given (heel elevation, big-toe wedge, breathing).
+The notes below are descriptive, not a prescription. 
+Execution (if cleared): Rise on both feet, shift to the working leg, lower the heel slowly below a step.
+Soleus bias: same with the knee bent.
+Mountain Strength · GTCB 102K Build
+5
+
+B · Single-leg strength & stability
+Bulgarian split squatB1
+SINGLE-LEG
+The workhorse single-leg strength builder. Mountain running is one leg at a time on uneven ground — this
+builds the unilateral strength and balance bilateral squats miss.
+Setup: Rear foot elevated on a bench, front foot far enough forward that the knee stays over mid-foot at
+the bottom.
+Execution: Lower under control until the front thigh is ~parallel, drive through the front heel/mid-foot to
+stand. Keep the torso tall-ish.
+TEMPO
+3-0-1-0
+DOSE
+3 × 8–10 / leg
+PROGRESS
+DBs → goblet → slow tempo
+Watch left side: hip stays level, knee doesn't dive in, no rotation. Quality over load on the weaker
+chain.
+High step-upB2
+SINGLE-LEG
+The closest gym mirror of power-hiking a steep climb — the GTCB's bread and butter. Trains hip/knee
+extension from a deep, loaded position.
+Setup: Box at mid-thigh height (knee bent ~90° when the foot's on it).
+Execution: Drive up through the top leg with minimal push-off from the floor leg — make the working
+leg do it. Control the lower back down (don't just drop).
+TEMPO
+2-0-2-0
+DOSE
+3 × 8 / leg
+PROGRESS
+Hold DBs / loaded pack
+Loading with your race pack ties it straight to power-hiking specificity.
+Single-leg Romanian deadliftB3
+SINGLE-LEGPOSTERIOR
+Builds the glute/hamstring chain unilaterally and trains balance + hip control on one leg — exactly the
+stability you need on technical, fatigued descents.
+Setup: Stand on one leg, soft knee, weight in the opposite hand (or both).
+Execution: Hinge at the hip, back flat, free leg extending behind as a counterweight; lower until you feel
+the hamstring load, return by squeezing the glute.
+TEMPO
+3-0-1-0
+DOSE
+3 × 8 / leg
+PROGRESS
+Heavier DB / KB
+Watch: Hips square to the floor (resist the open-up rotation) — this directly trains against your left-chain
+pattern.
+Mountain Strength · GTCB 102K Build
+6
+
+C · Posterior chain & glutes
+Romanian deadlift (bilateral)C1
+POSTERIOR
+Strong hamstrings and glutes power the climbs and protect the knees on descents. The hip hinge also
+reinforces the posture you'll hold for 24 hours.
+Execution: Barbell or DBs; hinge at the hips with a flat back, bar close to the legs, lower to mid-shin or
+where the back stays neutral, drive hips forward to stand.
+TEMPO
+3-0-1-0
+DOSE
+3 × 8–10
+PROGRESS
+Add load, keep form
+Hip thrust / glute bridgeC2
+POSTERIOR
+Direct glute strength — the prime mover for climbing and the muscle that should fire first in your chain.
+Strong glutes take load off the over-eager calf.
+Execution: Upper back on a bench (thrust) or floor (bridge), barbell/DB across the hips, drive through
+heels to full hip extension, squeeze glutes hard at the top, lower with control.
+TEMPO
+2-1-1-0
+DOSE
+3 × 10–12
+PROGRESS
+Load → single-leg
+Banded lateral walk / clamshellC3
+POSTERIORLATERAL CHAIN
+Targets glute medius — the hip stabiliser that keeps your pelvis level and stops the left-side collapse
+pattern on every single foot-plant over 102km.
+Execution: Band above knees or ankles. Lateral walk: half-squat, step sideways keeping tension, hips
+level. Clamshell: side-lying, knees bent, open the top knee without rolling the pelvis back.
+DOSE (WALK)
+3 × 10 steps / way
+DOSE (CLAM)
+3 × 12–15 / side
+PROGRESS
+Stronger band
+Doubles as warm-up activation. Useful most sessions.
+Mountain Strength · GTCB 102K Build
+7
+
+D · Trunk & postural endurance
+A 24-hour race is a posture-endurance event. These build a trunk that holds you upright and stable when everything's
+tired — anti-movement > crunches.
+Suitcase carry (loaded carry)D1
+TRUNK
+Anti-lateral-flexion under load while walking — almost perfect transfer to staying tall and stable under a
+pack for hours. Underrated for ultras.
+Execution: Heavy DB/KB in one hand, walk tall and level, resisting the lean toward the weight. Switch
+sides.
+DOSE
+3 × ~30m / side
+CUE
+Ribs down, hips level
+PROGRESS
+Heavier / longer
+Pallof pressD2
+TRUNK
+Anti-rotation — trains the trunk to resist the twist that creeps in with fatigue and feeds compensatory
+chains. Good carryover to your left-side rotation tendency.
+Execution: Band/cable at chest height to the side. Press the handle straight out and resist being
+rotated, hold, return. Stay square.
+DOSE
+3 × 10 / side
+CUE
+Slow, no twist
+PROGRESS
+Stronger band / longer hold
+Side plank (+ variations)D3
+TRUNKLATERAL CHAIN
+Lateral trunk + glute medius endurance in one. Holds the pelvis stable late in the race when the left side
+wants to give.
+Execution: Forearm under shoulder, body in a line, hips up. Build from knees → full → top-leg raises.
+Hold steady, breathe.
+DOSE
+3 × :30–:45 / side
+PROGRESS
+Longer hold / leg raise
+Mountain Strength · GTCB 102K Build
+8
+
+Dead bug & bird dogD4
+TRUNK
+Trunk control with limb movement and breathing — fits naturally with Effer's breathing-led approach.
+Teaches a stable core while arms and legs work, which is what running actually is.
+Dead bug: on your back, low back gently pressed down, slowly lower opposite arm + leg, exhale, return.
+Bird dog: on hands and knees, extend opposite arm + leg without tipping, hold, switch.
+DOSE
+2–3 × 8 / side
+CUE
+Slow + exhale on reach
+PROGRESS
+Slower / longer levers
+E · Calf & lower leg Effer-led zone
+WHOLE SECTION GOVERNED BY EFFER
+Your calf is the limiter and the working diagnosis (plantarflexor hyperexcitability / EAMC on the
+altered-neuromuscular-control model) means more calf load is not automatically better. Treat
+this section as a checklist of what calf work exists, not licence to program it yourself. Volume,
+progression and whether to load at all are Effer's calls. Build strength without tipping into the over-
+firing pattern — and respect your own flagged tendency to over-test. 
+Seated calf raise (soleus)E1
+CALF · CHECK EFFER
+Soleus is the endurance calf muscle and a big player in distance running and descending control. Bent-
+knee position biases it.
+Execution: Seated, knees bent ~90°, weight on thighs, raise through the balls of the feet, full controlled
+lower. Heel-elevation and big-toe cues per Effer.
+Only at the dose Effer sets.
+Standing calf raise (gastrocnemius)E2
+CALF · CHECK EFFER
+Straight-knee calf raise biases the gastroc — the power calf for push-off. Single-leg builds the side-to-side
+balance running demands.
+Execution: Standing, knees straight, rise high, lower slowly with control. Progress bilateral → single-leg
+only when cleared.
+Only at the dose Effer sets. Stop at any sign of the cramp/over-firing pattern.
+Mountain Strength · GTCB 102K Build
+9
+
+Session templates
+Five ready-to-run sessions for your weekly erg-day slot. Rotate 1 → 2 → 3 across the weeks; use 4 when
+time-poor and 5 once you hit taper. Each assumes the 6–8 min warm-up first.
+Template 1 · Descent-Protective
+~45 min · emphasis: eccentric quad / braking · base & build
+ExercisePrescriptionNote
+A1 Eccentric split squat3 × 6–8 / leg · 4-1-1-0Slow lower is the point
+A2 Step-down (forward)3 × 8 / leg · 3-1-1-0Hips level
+A3 Spanish squat4 × :30–:45 isoOr A4 Reverse Nordic 2×5 if
+progressing
+C3 Banded lateral walk3 × 10 steps / wayGlute med
+D3 Side plank3 × :30–:45 / sideFinisher
+E1/E2 CalfPer EfferOnly if prescribed
+Template 2 · Single-Leg Strength & Climb
+~50 min · emphasis: unilateral strength / power-hike · base & build
+ExercisePrescriptionNote
+B2 High step-up3 × 8 / leg · 2-0-2-0Load with pack for specificity
+B1 Bulgarian split squat3 × 8–10 / leg ·
+3-0-1-0
+Knee over mid-foot
+B3 Single-leg RDL3 × 8 / leg · 3-0-1-0Hips square
+C2 Hip thrust3 × 10–12 · 2-1-1-0Squeeze at top
+D2 Pallof press3 × 10 / sideAnti-rotation
+E1/E2 CalfPer EfferOnly if prescribed
+Mountain Strength · GTCB 102K Build
+10
+
+Template 3 · Posterior Chain & Postural Endurance
+~50 min · emphasis: glute/hamstring + trunk for the long haul · base & build
+ExercisePrescriptionNote
+C1 Romanian deadlift3 × 8–10 · 3-0-1-0Flat back, hinge
+B3 Single-leg RDL3 × 8 / legBalance + control
+C2 Hip thrust3 × 10–12Glute drive
+D1 Suitcase carry3 × ~30m / sideTall & level under load
+D4 Dead bug / bird dog2–3 × 8 / sideBreathe on the reach
+C3 Clamshell3 × 12–15 / sideGlute med finisher
+Template 4 · Full-Body Express
+~30 min · for time-poor weeks — keeps the priorities ticking
+ExercisePrescriptionNote
+B1 Bulgarian split squat3 × 8 / legMain strength
+A2 Step-down2 × 8 / legDescent insurance
+C2 Hip thrust2 × 12Glutes
+D1 Suitcase carry2 × 30m / sideTrunk
+If anything gets dropped further, keep the split squat and step-down — the descent-protective core.
+Template 5 · Taper Maintenance
+~25–30 min · from ~mid-Oct (W17+) — maintain, don't fatigue
+ExercisePrescriptionNote
+B1 Bulgarian split squat2 × 6 / leg · moderateRIR 3–4, no grind
+A2 Step-down2 × 6 / legKeep the pattern sharp
+C3 Lateral walk + D3 side plank2 sets eachActivation, light
+Cut load ~40–50%, keep movement quality and neural sharpness. Last real session ~7–10 days out, then only
+activation.
+Mountain Strength · GTCB 102K Build
+11
+
+Fitting it to the 23-week build
+One strength session a week, mapped to the phases of your run/hike/bike/row plan. The job of strength
+shifts from building to   maintaining as the mountain volume takes over.
+PhaseWeeksTemplatesStrength job
+BaseW1–8 (Jun–Jul)1 / 2 / 3 rotateBuild the durability bank. Heaviest
+loads, full sessions, progress weekly.
+Running's restricted, so strength is
+high-value now.
+BuildW9–16 (Aug–Sep)1 / 2 / 3, drop to 4
+on big weeks
+Maintain strength as hill/vert volume
+climbs. If a Peak B2B week is huge,
+use Template 4 so strength doesn't
+add fatigue.
+PeakW17–19 (Oct)4, then 5Pull volume right back. Maintenance
+only — protect the big mountain days.
+TaperW20–23 (Oct–Nov)5Keep the patterns alive, shed all
+fatigue. Last session ~7–10 days out.
+Progression rules (base & build)
+Add reps before load. Hit the top of the rep range with 2–3 RIR for two sessions, then nudge
+weight up and drop back to the bottom of the range.
+Slow the tempo as a progression in its own right — a 5-second eccentric is harder and more
+descent-specific than just more weight.
+Left side leads the dose. On single-leg work, the weaker/affected side sets the reps and load; the
+strong side matches, not exceeds.
+One variable at a time. Don't add load, reps and range in the same week.
+When to back off (no heroics)
+Any hint of the calf cramp / over-firing pattern → stop calf work, tell Effer.
+Strength soreness bleeding into the Friday Peak day → cut volume or move the session earlier in the
+week.
+Left knee/hip control degrading mid-set → end the set; it's a quality drill, not an ego one.
+Big mountain B2B coming → downgrade to Template 4/5 that week. The race is built on the hills, not
+the gym.
+THE ONE-LINE SUMMARY
+Strength here is insurance for the descents and the left chain, and an engine for the climbs — a
+supporting act to your hills, bike, row and Effer's rehab. Keep it consistent, keep it light enough to
+never cost you a Peak day, and taper it out so you arrive in Finestrat fresh. 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+Mountain Strength · GTCB 102K Build
+12
+
+Reference document · general training guidance, not medical advice · defer to Alex Effer on all rehab and calf loading ·
+built 7 Jun 2026
+Mountain Strength · GTCB 102K Build
+13
