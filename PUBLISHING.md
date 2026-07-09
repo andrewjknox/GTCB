@@ -17,10 +17,12 @@ knoxy.com/gtcb. No GitHub Pages experience assumed.
 
 After the first deploy the site serves at:
 
-**https://andrewjknox.github.io/GTCB/**
+**https://andrewjknox.github.io/gtcb/**
 
 This works immediately — every URL in `site/` is relative (a hard invariant,
-enforced by Gate C), so the site is happy at any subpath.
+enforced by Gate C), so the site is happy at any subpath. Note the path is
+**case-sensitive**: the repo was renamed to lowercase `gtcb` on 2026-07-09,
+so `/GTCB/` no longer resolves.
 
 ## 2. Custom domain: knoxy.com/gtcb (later decision)
 
@@ -39,10 +41,9 @@ Two routes when ready:
    - `A     knoxy.com → 185.199.110.153`
    - `A     knoxy.com → 185.199.111.153`
    - `CNAME www.knoxy.com → andrewjknox.github.io` (optional)
-4. Rename this repo to **`gtcb`** (Settings → General → Repository name).
-   Project Pages sites of a user with a custom domain serve under it
-   automatically → **knoxy.com/gtcb**. The relative-URL invariant means no code
-   changes are needed.
+4. Already done (2026-07-09): this repo is named **`gtcb`**, so its project
+   Pages site serves under the custom domain automatically → **knoxy.com/gtcb**.
+   The relative-URL invariant means no code changes are needed.
 
 Note: this moves ALL of knoxy.com off Azure — anything currently served there
 would need a new home first.
@@ -54,7 +55,7 @@ Keep DNS as-is. Either:
 - copy the contents of `site/` to the Azure host under a `/gtcb` path (a small
   deploy step or manual copy after each refresh commit), or
 - configure the Azure web server to reverse-proxy `/gtcb/*` to
-  `https://andrewjknox.github.io/GTCB/*`.
+  `https://andrewjknox.github.io/gtcb/*` (case-sensitive: lowercase).
 
 The site is static files only, so both are safe; the reverse-proxy keeps GitHub
 as the single source of truth.
