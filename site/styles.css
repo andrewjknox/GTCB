@@ -595,6 +595,113 @@ tr.race td { color: #FFFFFF; font-weight: bold; }
 
 .rehab-warning strong { color: #FF897D; }
 
+/* venues page */
+
+.tier-badge {
+  display: inline-block;
+  color: #000000;
+  font-weight: bold;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  padding: 1px 6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tier-keystone { background: #DB6559; }
+.tier-midweek { background: #CCC35E; }
+.tier-local { background: #3EB849; }
+.tier-specialist { background: #B766B5; }
+
+.venues-table { min-width: 860px; }
+
+.venues-table th,
+.venues-table td { text-align: left; }
+
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+}
+
+.venue-card {
+  border: 1px solid #5955E0;
+  padding: 10px 12px;
+}
+
+.venue-card.keystone { border-left: 3px solid #DB6559; }
+.venue-card.midweek { border-left: 3px solid #CCC35E; }
+.venue-card.local { border-left: 3px solid #3EB849; }
+.venue-card.specialist { border-left: 3px solid #B766B5; }
+
+.venue-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-bottom: 4px;
+}
+
+.venue-head h3 {
+  color: #74D07D;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.venue-drive {
+  color: #8076F1;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.venue-lede {
+  color: #8076F1;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.venue-stats div { margin-bottom: 6px; }
+.venue-stats div:last-child { margin-bottom: 0; }
+
+.venue-stats dt {
+  color: #CCC35E;
+  font-weight: bold;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.venue-stats dd { color: #CCCCCC; font-size: 12px; }
+
+.gap-callout {
+  border: 2px solid #5955E0;
+  background: #000000;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.gap-callout h2 {
+  color: #65DBEF;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.gap-callout p { color: #CCCCCC; }
+
+.gap-callout strong { color: #FFFFFF; }
+
+.doc-footnote {
+  color: #8076F1;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  margin: 0 2px 14px;
+}
+
 /* under construction (stub pages) */
 
 .under-construction {
