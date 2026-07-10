@@ -136,10 +136,11 @@ function renderHero(cur) {
     bar.appendChild(seg);
   }
 
-  $("hero-secondary").innerHTML =
-    "PACE TARGET <strong>" + fmtInt(prorated) + "m</strong> TO DATE · " +
-    fmtInt(pctPro) + "% OF PACE" +
-    (pctPro > 100 ? " · AHEAD OF PACE ▲" : "");
+  const remaining = Math.max(0, target - actual);
+  const daysLeft = Math.max(0, 7 - num(cur.days_elapsed));
+  $("hero-secondary").innerHTML = remaining > 0
+    ? "<strong>" + fmtInt(remaining) + "m</strong> TO GO · " + daysLeft + (daysLeft === 1 ? " DAY" : " DAYS") + " LEFT"
+    : "TARGET HIT ▲ · <strong>+" + fmtInt(actual - target) + "m</strong> OVER";
 
   const tof = cur.time_on_feet || {};
   const dist = cur.distance || {};
