@@ -680,7 +680,7 @@ tr.current-week td:first-child {
 .tier-local { background: #3EB849; }
 .tier-specialist { background: #B766B5; }
 
-.venues-table { min-width: 860px; }
+.venues-table { min-width: 940px; }
 
 .venues-table th,
 .venues-table td { text-align: left; }
