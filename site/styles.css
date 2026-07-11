@@ -548,6 +548,24 @@ tr.deload td:first-child { border-left: 3px solid #CCC35E; }
 
 tr.race td { color: #FFFFFF; font-weight: bold; }
 
+/* current training week — row class added by plan.html script */
+tr.current-week td {
+  border-top: 2px solid #65DBEF;
+  border-bottom: 2px solid #65DBEF;
+}
+tr.current-week td:first-child {
+  border-left: 3px solid #65DBEF;
+  color: #65DBEF;
+  font-weight: bold;
+}
+
+.now-tag {
+  color: #65DBEF;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
 .table-note { color: #8076F1; font-size: 11px; margin-top: 8px; }
 
 .t-legend-title {

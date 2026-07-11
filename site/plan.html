@@ -270,5 +270,29 @@
   </footer>
 
   <script src="nav.js"></script>
+  <script>
+    // Highlight the current training week's row. W1 = Mon 2026-06-08 (Europe/London).
+    (function () {
+      "use strict";
+      var today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" })
+        .format(new Date()); // "YYYY-MM-DD"
+      var week = Math.floor(
+        (Date.parse(today + "T00:00:00Z") - Date.UTC(2026, 5, 8)) / 604800000
+      ) + 1;
+      if (week < 1 || week > 23) return;
+      var row = document.querySelectorAll(".plan-table tbody tr")[week - 1];
+      if (!row) return;
+      row.classList.add("current-week");
+      row.setAttribute("aria-current", "true");
+      var phase = row.cells[2];
+      if (phase) {
+        var tag = document.createElement("span");
+        tag.className = "now-tag";
+        tag.textContent = "· THIS WEEK";
+        phase.appendChild(document.createTextNode(" "));
+        phase.appendChild(tag);
+      }
+    })();
+  </script>
 </body>
 </html>
