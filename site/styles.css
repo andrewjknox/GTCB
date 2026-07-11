@@ -942,6 +942,37 @@ tr.current-week td:first-child {
 .tag-bag { background: #B766B5; }
 .tag-evac { background: #65DBEF; }
 
+/* course page */
+
+.profile-wrap { width: 100%; margin-top: 4px; }
+
+.profile-svg { display: block; width: 100%; height: auto; }
+
+.profile-svg text { font-family: inherit; }
+
+.profile-svg .ax { fill: #8076F1; font-size: 10px; letter-spacing: 0.08em; }
+
+.profile-svg .peak { fill: #CCCCCC; font-size: 10px; letter-spacing: 0.12em; }
+
+.profile-svg .station-hit { cursor: pointer; outline: none; }
+
+.profile-svg .station-hit:focus {
+  stroke: #FFFFFF;
+  stroke-opacity: 0.9;
+  stroke-width: 1;
+}
+
+.legend .swatch.mk-aid { background: #65DBEF; border-radius: 50%; }
+.legend .swatch.mk-cutoff { background: #FF897D; }
+
+.tooltip .tip-dim { color: #8076F1; }
+
+.ruto-table { min-width: 900px; }
+
+.ruto-table .support-cell { white-space: nowrap; }
+
+.tag-med { background: #FF897D; }
+
 /* under construction (stub pages) */
 
 .under-construction {
