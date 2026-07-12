@@ -76,10 +76,19 @@ function setMetric(m) {
   try { localStorage.setItem(METRIC_KEY, m); } catch (e) { /* in-memory only */ }
 }
 
-/* ToF target: plan.json keeps a [min,max] hours range, but THE target is the
-   upper bound — collapse to a single value at display time ("7h", "2.5h") */
-function fmtTofTarget(t) {
-  return num(t[1]) + "h";
+/* ToF target: plan.json's tof_target_h is either a bare number of hours or a
+   legacy [min,max] range (THE target is the upper bound). Normalize to a
+   single number, or null when absent/invalid (e.g. race week). */
+function tofTargetH(wk) {
+  const raw = wk ? wk.tof_target_h : undefined;
+  if (raw === null || raw === undefined) return null;
+  const v = Array.isArray(raw) ? Number(raw[1]) : Number(raw);
+  return Number.isFinite(v) ? v : null;
+}
+
+/* format the normalized target hours: "7h", "2.5h" */
+function fmtTofTarget(h) {
+  return h + "h";
 }
 
 function statusClass(pct) {
@@ -167,9 +176,7 @@ function renderHero(state) {
   const planWk = (state.plan.weeks || []).find(
     (w) => w.iso_week === cur.iso_week || num(w.week) === num(cur.training_week)
   );
-  const tofTargetH = planWk && Array.isArray(planWk.tof_target_h)
-    ? num(planWk.tof_target_h[1])
-    : null;
+  const targetH = tofTargetH(planWk);
 
   $("hero-title").textContent = "WEEK " + num(cur.training_week) + " · " + (cur.iso_week || "");
   const badge = $("hero-badge");
@@ -191,7 +198,7 @@ function renderHero(state) {
     }
   };
 
-  if (timeMode && tofTargetH === null) {
+  if (timeMode && targetH === null) {
     /* race week has no ToF target — actual only; no compare/pct/bar/to-go */
     $("hero-actual").textContent = fmtHM(tofActualS);
     $("hero-unit").textContent = "h:mm";
@@ -203,7 +210,7 @@ function renderHero(state) {
       "Week-to-date time on feet " + fmtHM(tofActualS) + " h:mm, no time target this week");
     $("hero-secondary").innerHTML = "";
   } else if (timeMode) {
-    const targetS = tofTargetH * 3600;
+    const targetS = targetH * 3600;
     const pctFull = targetS > 0 ? (tofActualS / targetS) * 100 : 0;
     /* pace status vs the pro-rated share of the week, like vert's pct_of_prorated */
     const proratedS = (targetS * daysElapsed) / 7;
@@ -213,7 +220,7 @@ function renderHero(state) {
     $("hero-actual").textContent = fmtHM(tofActualS);
     $("hero-unit").textContent = "h:mm";
     vs.classList.remove("hidden");
-    $("hero-prorated").textContent = String(tofTargetH);
+    $("hero-prorated").textContent = String(targetH);
     $("hero-vs-unit").textContent = "h";
 
     $("hero-pct").innerHTML =
@@ -346,7 +353,8 @@ function drawBuildChart(state) {
   let maxY = 0;
   if (timeMode) {
     for (const wk of weeks) {
-      if (Array.isArray(wk.tof_target_h)) maxY = Math.max(maxY, num(wk.tof_target_h[1]));
+      const t = tofTargetH(wk);
+      if (t !== null) maxY = Math.max(maxY, t);
       const s = state.byIso[wk.iso_week];
       if (s && s.time_on_feet) maxY = Math.max(maxY, num(s.time_on_feet.actual_s) / 3600);
     }
@@ -397,7 +405,7 @@ function drawBuildChart(state) {
     let text = "W" + wk.week + " · " + wk.phase.toUpperCase() + " · " + wk.iso_week;
 
     if (timeMode) {
-      const tof = Array.isArray(wk.tof_target_h) ? wk.tof_target_h : null;
+      const tof = tofTargetH(wk);
       const actualS = s && s.time_on_feet ? num(s.time_on_feet.actual_s) : null;
       const actualH = actualS === null ? null : actualS / 3600;
 
@@ -408,17 +416,17 @@ function drawBuildChart(state) {
         ctx.fillRect(Math.round(x), Math.round(yA), barW, Math.round(yOf(0) - yA));
       }
 
-      // target: hollow outline to the single target (upper bound of the plan range)
-      if (tof) {
+      // target: hollow outline to the single target
+      if (tof !== null) {
         ctx.strokeStyle = isCur ? C.white : C.gray;
         ctx.lineWidth = 1;
-        const yT = Math.round(yOf(num(tof[1]))) + 0.5;
+        const yT = Math.round(yOf(tof)) + 0.5;
         ctx.strokeRect(Math.round(x) + 0.5, yT, barW - 1, Math.round(yOf(0)) - yT);
       }
 
       // current week: pro-rated pace tick (target × days elapsed / 7) + white marker
-      if (isCur && s && tof) {
-        const paceS = num(tof[1]) * 3600 * num(s.days_elapsed) / 7;
+      if (isCur && s && tof !== null) {
+        const paceS = tof * 3600 * num(s.days_elapsed) / 7;
         const yP = Math.round(yOf(paceS / 3600)) + 0.5;
         ctx.strokeStyle = C.cyan;
         ctx.lineWidth = 2;
@@ -430,17 +438,17 @@ function drawBuildChart(state) {
         ctx.fillStyle = C.white;
         ctx.textAlign = "center";
         ctx.font = FONT_BOLD;
-        ctx.fillText("▼", x + barW / 2, Math.min(yOf(num(tof[1])), yOf(actualH || 0)) - 10);
+        ctx.fillText("▼", x + barW / 2, Math.min(yOf(tof), yOf(actualH || 0)) - 10);
         ctx.font = FONT;
       }
 
       if (actualH !== null) {
-        text += "\nTOF " + fmtHM(actualS) + (tof ? " / " + fmtTofTarget(tof) : "");
-        if (isCur && tof) {
-          const paceS = num(tof[1]) * 3600 * num(s.days_elapsed) / 7;
+        text += "\nTOF " + fmtHM(actualS) + (tof !== null ? " / " + fmtTofTarget(tof) : "");
+        if (isCur && tof !== null) {
+          const paceS = tof * 3600 * num(s.days_elapsed) / 7;
           text += "\nIN PROGRESS · PACE LINE " + fmtHM(paceS) + " h:mm";
         }
-      } else if (tof) {
+      } else if (tof !== null) {
         text += "\nTARGET " + fmtTofTarget(tof) + " · NO DATA YET";
       } else {
         text += "\nNO TOF TARGET";
@@ -582,13 +590,13 @@ function renderBuildTableTime(state) {
     const s = state.byIso[wk.iso_week];
     const tr = document.createElement("tr");
     if (wk.week === curTW) tr.className = "current";
-    const tof = Array.isArray(wk.tof_target_h) ? wk.tof_target_h : null;
-    const target = tof ? fmtTofTarget(tof) : "—";
+    const tof = tofTargetH(wk);
+    const target = tof !== null ? fmtTofTarget(tof) : "—";
     const actualS = s && s.time_on_feet ? num(s.time_on_feet.actual_s) : null;
     const actual = actualS !== null ? fmtHM(actualS) : "—";
     let status = "—";
-    if (actualS !== null && tof) {
-      if (actualS / 3600 >= num(tof[1])) {
+    if (actualS !== null && tof !== null) {
+      if (actualS / 3600 >= tof) {
         status = '<span class="ok">✓</span>';
       } else {
         // in-progress week below target is expected mid-week -> warn, not bad
