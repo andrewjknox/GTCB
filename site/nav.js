@@ -1,7 +1,45 @@
-/* GTCB shared nav — mobile burger toggle + metric/imperial unit toggle.
-   Loaded by all pages. Unit choice persists in localStorage ("gtcb-units"). */
+/* GTCB shared nav — renders the nav bar into the <nav class="site-nav">
+   placeholder on every page (single source of truth for the links), then
+   wires the mobile burger toggle + metric/imperial unit toggle.
+   Unit choice persists in localStorage ("gtcb-units"). */
 (function () {
   "use strict";
+
+  /* ---------- render ---------- */
+  var PAGES = [
+    ["index.html", "Dashboard"],
+    ["plan.html", "The Plan"],
+    ["strength.html", "Strength"],
+    ["venues.html", "Venues"],
+    ["course.html", "Course"],
+    ["regs.html", "102K Regs"],
+    ["conditions.html", "Entry Conditions"]
+  ];
+
+  var nav = document.querySelector("nav.site-nav");
+  if (nav) {
+    // Last path segment; a directory URL ("…/gtcb/") means the index page.
+    var here = location.pathname.split("/").pop() || "index.html";
+    var parts = [
+      '<button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation menu">',
+      '<span class="burger-box" aria-hidden="true">',
+      '<span class="burger-bar"></span><span class="burger-bar"></span><span class="burger-bar"></span>',
+      '</span> MENU</button>',
+      '<div id="nav-links" class="nav-links">'
+    ];
+    for (var p = 0; p < PAGES.length; p++) {
+      parts.push(
+        '<a href="' + PAGES[p][0] + '"' +
+        (PAGES[p][0] === here ? ' aria-current="page"' : "") +
+        ">" + PAGES[p][1] + "</a>"
+      );
+    }
+    parts.push(
+      '<button id="unit-toggle" class="unit-toggle" type="button" aria-pressed="false" aria-label="Switch between metric and imperial units">UNITS: KM·M</button>',
+      "</div>"
+    );
+    nav.innerHTML = parts.join("");
+  }
 
   /* ---------- burger ---------- */
   var btn = document.querySelector(".nav-burger");
