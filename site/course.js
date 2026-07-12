@@ -71,6 +71,9 @@
     var x = clientX + pad, y = clientY - h - pad;
     if (x + w > window.innerWidth - 4) x = clientX - w - pad;
     if (y < 4) y = clientY + pad;
+    /* clamp fully on-screen — narrow viewports can otherwise push it off either edge */
+    x = Math.max(4, Math.min(x, window.innerWidth - w - 4));
+    y = Math.max(4, Math.min(y, window.innerHeight - h - 4));
     tip.style.left = x + "px";
     tip.style.top = y + "px";
   }
@@ -240,10 +243,12 @@
       }
       tipShow(lines, e.clientX, e.clientY);
     });
-    overlay.addEventListener("pointerleave", function () {
+    function overlayClear() {
       cross.setAttribute("visibility", "hidden");
       tipHide();
-    });
+    }
+    overlay.addEventListener("pointerleave", overlayClear);
+    overlay.addEventListener("pointercancel", overlayClear);
 
     /* station markers — circles = aid, squares = hard cut-off (shape + colour) */
     var mk = el("g", {}, svg);
@@ -265,6 +270,7 @@
           tipShow(stationLines(s), e.clientX, e.clientY);
         });
         hit.addEventListener("pointerleave", tipHide);
+        hit.addEventListener("pointercancel", tipHide);
         hit.addEventListener("focus", function () {
           var r = hit.getBoundingClientRect();
           tipShow(stationLines(s), r.left + r.width / 2, r.top);
@@ -345,6 +351,12 @@
   window.addEventListener("gtcb:units", renderAll);
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") tipHide();
+  });
+  /* touch never fires pointerleave reliably: the fixed-position tip would stay
+     glued to the viewport while the page scrolls away underneath it */
+  window.addEventListener("scroll", tipHide, { passive: true, capture: true });
+  document.addEventListener("pointerdown", function (e) {
+    if (!chartHost.contains(e.target)) tipHide();
   });
 
   renderAll();

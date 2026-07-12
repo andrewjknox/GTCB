@@ -344,7 +344,7 @@ tr.current td { color: #FFFFFF; font-weight: bold; }
   font-family: inherit;
   font-size: 12px;
   line-height: 1.45;
-  max-width: 260px;
+  max-width: min(260px, calc(100vw - 24px));
   white-space: pre-line;
 }
 

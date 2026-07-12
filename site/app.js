@@ -212,6 +212,9 @@ function attachTooltip(canvas, hitRegions) {
       const th = tooltip.el.offsetHeight;
       if (tx + tw > window.innerWidth - 8) tx = evt.clientX - tw - pad;
       if (ty + th > window.innerHeight - 8) ty = evt.clientY - th - pad;
+      /* clamp fully on-screen — narrow viewports can otherwise push it off either edge */
+      tx = Math.max(8, Math.min(tx, window.innerWidth - tw - 8));
+      ty = Math.max(8, Math.min(ty, window.innerHeight - th - 8));
       tooltip.el.style.left = tx + "px";
       tooltip.el.style.top = ty + "px";
     } else {
@@ -221,6 +224,14 @@ function attachTooltip(canvas, hitRegions) {
   canvas.addEventListener("mousemove", show);
   canvas.addEventListener("mouseleave", () => tooltip.el.classList.add("hidden"));
 }
+
+/* touch taps show tooltips via synthetic mousemove but never fire mouseleave:
+   the fixed-position tip would stay glued to the viewport while the page scrolls */
+window.addEventListener(
+  "scroll",
+  () => { if (tooltip.el) tooltip.el.classList.add("hidden"); },
+  { passive: true, capture: true }
+);
 
 /* ---------- build chart (23 weeks, actual vs target outline) ---------- */
 function drawBuildChart(state) {
