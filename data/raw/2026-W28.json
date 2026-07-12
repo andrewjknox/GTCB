@@ -6,8 +6,30 @@
     "end": "2026-07-12T23:59:59",
     "tz": "Europe/London"
   },
-  "fetched_at": "2026-07-10T00:00:00Z",
+  "fetched_at": "2026-07-12T14:30:00Z",
   "activities": [
+    {
+      "id": 19278660021,
+      "name": "Morning Hike Reps",
+      "sport_type": "Hike",
+      "start_date_local": "2026-07-12T07:57:52",
+      "distance_m": 8865,
+      "moving_time_s": 6130,
+      "elapsed_time_s": 7454,
+      "elevation_gain_m": 564,
+      "description": "⛰️ Mellor Moor (1,075 ft) | 🌐 summitbag.com"
+    },
+    {
+      "id": 19265432143,
+      "name": "Wythenshawe parkrun 🔥",
+      "sport_type": "Walk",
+      "start_date_local": "2026-07-11T09:05:47",
+      "distance_m": 5040,
+      "moving_time_s": 2499,
+      "elapsed_time_s": 2499,
+      "elevation_gain_m": 6,
+      "description": null
+    },
     {
       "id": 19253168410,
       "name": "Morning Trail Run 🫠💦",
