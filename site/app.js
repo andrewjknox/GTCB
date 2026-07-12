@@ -61,6 +61,28 @@ function fmtHM(totalS) {
   return h + ":" + String(m).padStart(2, "0");
 }
 
+/* ---------- chart metric (vert | time), persisted like the unit toggle ---------- */
+const METRIC_KEY = "gtcb-metric";
+let metric = (() => {
+  try {
+    return localStorage.getItem(METRIC_KEY) === "time" ? "time" : "vert";
+  } catch (e) {
+    return "vert";
+  }
+})();
+const isTime = () => metric === "time";
+function setMetric(m) {
+  metric = m;
+  try { localStorage.setItem(METRIC_KEY, m); } catch (e) { /* in-memory only */ }
+}
+
+/* ToF target range [min,max] hours -> "6–7h", "5h", "2.5h" */
+function fmtTofRange(t) {
+  const lo = num(t[0]);
+  const hi = num(t[1]);
+  return lo === hi ? lo + "h" : lo + "–" + hi + "h";
+}
+
 function statusClass(pct) {
   if (pct >= 100) return "ok";
   if (pct >= 70) return "warn";
@@ -241,6 +263,10 @@ function drawBuildChart(state) {
   const W = canvas.width;
   const H = canvas.height;
   const ctx = canvas.getContext("2d");
+  const timeMode = isTime();
+  canvas.setAttribute("aria-label", timeMode
+    ? "Weekly time on feet versus target range, training weeks 1 to 23"
+    : "Weekly vertical gain versus target, training weeks 1 to 23");
 
   const weeks = state.plan.weeks;
   const curTW = num(state.current.training_week);
@@ -249,13 +275,25 @@ function drawBuildChart(state) {
   const plotW = W - mL - mR;
   const plotH = H - mT - mB;
 
-  // axis works in display units (m or ft) so gridlines land on round numbers
-  const gridStep = isImperial() ? 2000 : 500;
+  // axis works in display units (m / ft / hours) so gridlines land on round numbers
+  let gridStep;
   let maxY = 0;
-  for (const wk of weeks) {
-    maxY = Math.max(maxY, vertVal(wk.vert_target_m));
-    const s = state.byIso[wk.iso_week];
-    if (s && s.vert) maxY = Math.max(maxY, vertVal(s.vert.actual_m));
+  if (timeMode) {
+    for (const wk of weeks) {
+      if (Array.isArray(wk.tof_target_h)) maxY = Math.max(maxY, num(wk.tof_target_h[1]));
+      const s = state.byIso[wk.iso_week];
+      if (s && s.time_on_feet) maxY = Math.max(maxY, num(s.time_on_feet.actual_s) / 3600);
+    }
+    // whole-hour step sized so ~4–7 gridlines show
+    gridStep = 1;
+    while (maxY / gridStep > 7) gridStep += 1;
+  } else {
+    gridStep = isImperial() ? 2000 : 500;
+    for (const wk of weeks) {
+      maxY = Math.max(maxY, vertVal(wk.vert_target_m));
+      const s = state.byIso[wk.iso_week];
+      if (s && s.vert) maxY = Math.max(maxY, vertVal(s.vert.actual_m));
+    }
   }
   maxY = Math.max(gridStep, Math.ceil(maxY / gridStep) * gridStep);
   const yOf = (v) => mT + plotH - (num(v) / maxY) * plotH;
@@ -263,7 +301,7 @@ function drawBuildChart(state) {
   ctx.fillStyle = C.black;
   ctx.fillRect(0, 0, W, H);
 
-  // gridlines every 500 m / 2000 ft
+  // gridlines every 500 m / 2000 ft (vert) or every whole hours step (time)
   ctx.font = FONT;
   ctx.textBaseline = "middle";
   for (let v = 0; v <= maxY; v += gridStep) {
@@ -287,40 +325,108 @@ function drawBuildChart(state) {
 
   weeks.forEach((wk, i) => {
     const x = mL + i * slotW + (slotW - barW) / 2;
-    const target = num(wk.vert_target_m);
     const s = state.byIso[wk.iso_week];
-    const actual = s && s.vert ? num(s.vert.actual_m) : null;
     const color = PHASE_COLORS[wk.phase] || C.gray;
     const isCur = wk.week === curTW;
+    let text = "W" + wk.week + " · " + wk.phase.toUpperCase() + " · " + wk.iso_week;
 
-    // actual: solid phase-colored fill
-    if (actual !== null && actual > 0) {
-      ctx.fillStyle = color;
-      const yA = yOf(vertVal(actual));
-      ctx.fillRect(Math.round(x), Math.round(yA), barW, Math.round(yOf(0) - yA));
-    }
+    if (timeMode) {
+      const tof = Array.isArray(wk.tof_target_h) ? wk.tof_target_h : null;
+      const actualS = s && s.time_on_feet ? num(s.time_on_feet.actual_s) : null;
+      const actualH = actualS === null ? null : actualS / 3600;
 
-    // target: hollow outline drawn on top so it stays visible when exceeded
-    ctx.strokeStyle = isCur ? C.white : C.gray;
-    ctx.lineWidth = 1;
-    const yT = Math.round(yOf(vertVal(target))) + 0.5;
-    ctx.strokeRect(Math.round(x) + 0.5, yT, barW - 1, Math.round(yOf(0)) - yT);
+      // actual: solid phase-colored fill
+      if (actualH !== null && actualH > 0) {
+        ctx.fillStyle = color;
+        const yA = yOf(actualH);
+        ctx.fillRect(Math.round(x), Math.round(yA), barW, Math.round(yOf(0) - yA));
+      }
 
-    // current week: pro-rated pace tick in cyan + white marker above
-    if (isCur && s && s.vert) {
-      const yP = Math.round(yOf(vertVal(s.vert.prorated_target_m))) + 0.5;
-      ctx.strokeStyle = C.cyan;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(x - 3, yP);
-      ctx.lineTo(x + barW + 3, yP);
-      ctx.stroke();
+      // target range: hollow outline to range max + tick across the bar at range min
+      if (tof) {
+        ctx.strokeStyle = isCur ? C.white : C.gray;
+        ctx.lineWidth = 1;
+        const yT = Math.round(yOf(num(tof[1]))) + 0.5;
+        ctx.strokeRect(Math.round(x) + 0.5, yT, barW - 1, Math.round(yOf(0)) - yT);
+        if (num(tof[0]) !== num(tof[1])) {
+          const yMin = Math.round(yOf(num(tof[0]))) + 0.5;
+          ctx.beginPath();
+          ctx.moveTo(Math.round(x) + 0.5, yMin);
+          ctx.lineTo(Math.round(x) + barW - 0.5, yMin);
+          ctx.stroke();
+        }
+      }
+
+      // current week: pro-rated pace tick (range max × days elapsed / 7) + white marker
+      if (isCur && s && tof) {
+        const paceS = num(tof[1]) * 3600 * num(s.days_elapsed) / 7;
+        const yP = Math.round(yOf(paceS / 3600)) + 0.5;
+        ctx.strokeStyle = C.cyan;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x - 3, yP);
+        ctx.lineTo(x + barW + 3, yP);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+        ctx.fillStyle = C.white;
+        ctx.textAlign = "center";
+        ctx.font = FONT_BOLD;
+        ctx.fillText("▼", x + barW / 2, Math.min(yOf(num(tof[1])), yOf(actualH || 0)) - 10);
+        ctx.font = FONT;
+      }
+
+      if (actualH !== null) {
+        text += "\nTOF " + fmtHM(actualS) + (tof ? " / " + fmtTofRange(tof) : "");
+        if (isCur && tof) {
+          const paceS = num(tof[1]) * 3600 * num(s.days_elapsed) / 7;
+          text += "\nIN PROGRESS · PACE LINE " + fmtHM(paceS) + " h:mm";
+        }
+      } else if (tof) {
+        text += "\nTARGET " + fmtTofRange(tof) + " · NO DATA YET";
+      } else {
+        text += "\nNO TOF TARGET";
+      }
+    } else {
+      const target = num(wk.vert_target_m);
+      const actual = s && s.vert ? num(s.vert.actual_m) : null;
+
+      // actual: solid phase-colored fill
+      if (actual !== null && actual > 0) {
+        ctx.fillStyle = color;
+        const yA = yOf(vertVal(actual));
+        ctx.fillRect(Math.round(x), Math.round(yA), barW, Math.round(yOf(0) - yA));
+      }
+
+      // target: hollow outline drawn on top so it stays visible when exceeded
+      ctx.strokeStyle = isCur ? C.white : C.gray;
       ctx.lineWidth = 1;
-      ctx.fillStyle = C.white;
-      ctx.textAlign = "center";
-      ctx.font = FONT_BOLD;
-      ctx.fillText("▼", x + barW / 2, Math.min(yOf(vertVal(target)), yOf(vertVal(actual))) - 10);
-      ctx.font = FONT;
+      const yT = Math.round(yOf(vertVal(target))) + 0.5;
+      ctx.strokeRect(Math.round(x) + 0.5, yT, barW - 1, Math.round(yOf(0)) - yT);
+
+      // current week: pro-rated pace tick in cyan + white marker above
+      if (isCur && s && s.vert) {
+        const yP = Math.round(yOf(vertVal(s.vert.prorated_target_m))) + 0.5;
+        ctx.strokeStyle = C.cyan;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x - 3, yP);
+        ctx.lineTo(x + barW + 3, yP);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+        ctx.fillStyle = C.white;
+        ctx.textAlign = "center";
+        ctx.font = FONT_BOLD;
+        ctx.fillText("▼", x + barW / 2, Math.min(yOf(vertVal(target)), yOf(vertVal(actual))) - 10);
+        ctx.font = FONT;
+      }
+
+      if (actual !== null) {
+        const pct = s.vert ? num(s.vert.pct_of_target) : 0;
+        text += "\nVERT " + fmtVert(actual) + " / " + fmtVert(target) + " " + vertUnit() + " (" + pct + "%)";
+        if (isCur) text += "\nIN PROGRESS · PACE LINE " + fmtVert(s.vert.prorated_target_m) + " " + vertUnit();
+      } else {
+        text += "\nTARGET " + fmtVert(target) + " " + vertUnit() + " · NO DATA YET";
+      }
     }
 
     // x labels
@@ -330,14 +436,6 @@ function drawBuildChart(state) {
       ctx.fillText(String(wk.week), x + barW / 2, H - mB + 10);
     }
 
-    let text = "W" + wk.week + " · " + wk.phase.toUpperCase() + " · " + wk.iso_week;
-    if (actual !== null) {
-      const pct = s.vert ? num(s.vert.pct_of_target) : 0;
-      text += "\nVERT " + fmtVert(actual) + " / " + fmtVert(target) + " " + vertUnit() + " (" + pct + "%)";
-      if (isCur) text += "\nIN PROGRESS · PACE LINE " + fmtVert(s.vert.prorated_target_m) + " " + vertUnit();
-    } else {
-      text += "\nTARGET " + fmtVert(target) + " " + vertUnit() + " · NO DATA YET";
-    }
     if (wk.notes) text += "\n[" + wk.notes.toUpperCase() + "]";
     hits.push({ x: mL + i * slotW, y: mT, w: slotW, h: plotH, text });
   });
@@ -385,8 +483,13 @@ function renderLegend(plan) {
 }
 
 function renderBuildTable(state) {
+  if (isTime()) {
+    renderBuildTableTime(state);
+    return;
+  }
   $("th-target").textContent = "TARGET " + vertUnit();
   $("th-actual").textContent = "ACTUAL " + vertUnit();
+  $("th-status").textContent = "%";
   const tbody = $("build-table").querySelector("tbody");
   tbody.innerHTML = "";
   for (const wk of state.plan.weeks) {
@@ -406,6 +509,46 @@ function renderBuildTable(state) {
   }
 }
 
+/* time-on-feet table: target range, actual h:mm, and a status glyph vs the range —
+   no derived percentages (concrete units only) */
+function renderBuildTableTime(state) {
+  $("th-target").textContent = "TARGET h";
+  $("th-actual").textContent = "ACTUAL h:mm";
+  $("th-status").textContent = "VS";
+  const tbody = $("build-table").querySelector("tbody");
+  tbody.innerHTML = "";
+  const curTW = num(state.current.training_week);
+  for (const wk of state.plan.weeks) {
+    const s = state.byIso[wk.iso_week];
+    const tr = document.createElement("tr");
+    if (wk.week === curTW) tr.className = "current";
+    const tof = Array.isArray(wk.tof_target_h) ? wk.tof_target_h : null;
+    const target = tof ? fmtTofRange(tof) : "—";
+    const actualS = s && s.time_on_feet ? num(s.time_on_feet.actual_s) : null;
+    const actual = actualS !== null ? fmtHM(actualS) : "—";
+    let status = "—";
+    if (actualS !== null && tof) {
+      const h = actualS / 3600;
+      if (h < num(tof[0])) {
+        // in-progress week below min is expected mid-week -> warn, not bad
+        status = '<span class="' + (wk.week === curTW ? "warn" : "bad") + '">▼</span>';
+      } else if (h > num(tof[1])) {
+        status = '<span class="ok">▲</span>';
+      } else {
+        status = '<span class="ok">✓</span>';
+      }
+    }
+    tr.innerHTML =
+      "<td>" + wk.week + "</td>" +
+      '<td class="left">' + wk.iso_week + "</td>" +
+      '<td class="left">' + wk.phase + "</td>" +
+      "<td>" + target + "</td>" +
+      "<td>" + actual + "</td>" +
+      "<td>" + status + "</td>";
+    tbody.appendChild(tr);
+  }
+}
+
 /* ---------- daily strip (current week, Mon–Sun) ---------- */
 function drawDailyChart(state) {
   const canvas = $("daily-chart");
@@ -414,6 +557,10 @@ function drawDailyChart(state) {
   const W = canvas.width;
   const H = canvas.height;
   const ctx = canvas.getContext("2d");
+  const timeMode = isTime();
+  canvas.setAttribute("aria-label", timeMode
+    ? "Time on feet per day, Monday to Sunday, current week"
+    : "Vertical gain per day, Monday to Sunday, current week");
 
   const cur = state.current;
   const days = Array.isArray(cur.daily) ? cur.daily : [];
@@ -426,9 +573,16 @@ function drawDailyChart(state) {
   const slotW = (W - mL - mR) / 7;
   const barW = Math.max(6, Math.floor(slotW * 0.55));
 
-  let maxY = isImperial() ? 330 : 100; // same floor ≈100 m either way
-  for (const d of days) maxY = Math.max(maxY, vertVal(d.vert_m));
-  maxY = Math.ceil(maxY / 100) * 100;
+  let maxY;
+  if (timeMode) {
+    maxY = 1; // hours — 1h floor so a 30-min day doesn't fill the chart
+    for (const d of days) maxY = Math.max(maxY, num(d.time_s) / 3600);
+    maxY = Math.ceil(maxY * 2) / 2; // half-hour headroom rounding
+  } else {
+    maxY = isImperial() ? 330 : 100; // same floor ≈100 m either way
+    for (const d of days) maxY = Math.max(maxY, vertVal(d.vert_m));
+    maxY = Math.ceil(maxY / 100) * 100;
+  }
   const yOf = (v) => mT + plotH - (num(v) / maxY) * plotH;
 
   ctx.fillStyle = C.black;
@@ -445,18 +599,18 @@ function drawDailyChart(state) {
   const hits = [];
   for (let i = 0; i < 7; i++) {
     const d = days[i] || { date: "", vert_m: 0, time_s: 0, distance_m: 0 };
-    const v = num(d.vert_m);
+    const v = timeMode ? num(d.time_s) : num(d.vert_m);
     const x = mL + i * slotW + (slotW - barW) / 2;
     const isFuture = i >= elapsed;
 
     if (v > 0) {
       ctx.fillStyle = color;
-      const yV = yOf(vertVal(v));
+      const yV = yOf(timeMode ? v / 3600 : vertVal(v));
       ctx.fillRect(Math.round(x), Math.round(yV), barW, Math.round(yOf(0) - yV));
       ctx.fillStyle = C.white;
       ctx.textAlign = "center";
       ctx.font = FONT_BOLD;
-      ctx.fillText(fmtVert(v), x + barW / 2, yV - 9);
+      ctx.fillText(timeMode ? fmtHM(v) : fmtVert(v), x + barW / 2, yV - 9);
       ctx.font = FONT;
     } else if (isFuture) {
       // future day: hollow gray placeholder block on the baseline
@@ -477,9 +631,9 @@ function drawDailyChart(state) {
 
     let text = names[i] + (d.date ? " " + d.date : "");
     if (isFuture) text += "\nUPCOMING";
-    else if (v <= 0 && num(d.time_s) <= 0) text += "\nREST DAY";
+    else if (num(d.vert_m) <= 0 && num(d.time_s) <= 0) text += "\nREST DAY";
     else {
-      text += "\nVERT " + fmtVert(v) + " " + vertUnit();
+      text += "\nVERT " + fmtVert(d.vert_m) + " " + vertUnit();
       text += "\n" + fmtHM(d.time_s) + " h:mm · " + fmtDist(d.distance_m) + " " + distUnit();
     }
     hits.push({ x: mL + i * slotW, y: mT, w: slotW, h: plotH + 4, text });
@@ -552,6 +706,31 @@ function renderFooter(cur) {
   $("site-footer").classList.remove("hidden");
 }
 
+/* ---------- metric toggle (▲ VERT | ⏱ TIME) — one shared state for
+   build chart + build table + daily strip ---------- */
+function initMetricToggle(state) {
+  const btnVert = $("metric-vert");
+  const btnTime = $("metric-time");
+  const apply = () => {
+    btnVert.classList.toggle("active", !isTime());
+    btnVert.setAttribute("aria-pressed", String(!isTime()));
+    btnTime.classList.toggle("active", isTime());
+    btnTime.setAttribute("aria-pressed", String(isTime()));
+    $("daily-title").textContent = "THIS WEEK · DAILY " + (isTime() ? "TIME" : "VERT");
+  };
+  const flip = (m) => {
+    if (m === metric) return;
+    setMetric(m);
+    apply();
+    drawBuildChart(state);
+    renderBuildTable(state);
+    drawDailyChart(state);
+  };
+  btnVert.addEventListener("click", () => flip("vert"));
+  btnTime.addEventListener("click", () => flip("time"));
+  apply();
+}
+
 /* ---------- boot ---------- */
 async function main() {
   startCountdown();
@@ -571,6 +750,7 @@ async function main() {
   }
 
   $("boot-msg").classList.add("hidden");
+  initMetricToggle(state);
   renderHero(state.current);
   renderLegend(state.plan);
   drawBuildChart(state);

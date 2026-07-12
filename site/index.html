@@ -74,6 +74,10 @@
     <section id="build-panel" class="panel hidden" aria-labelledby="build-title">
       <div class="panel-head">
         <h2 id="build-title">THE BUILD &middot; W1&ndash;W23</h2>
+        <div class="metric-toggle" role="group" aria-label="Chart metric">
+          <button id="metric-vert" type="button" class="metric-btn active" aria-pressed="true">&#9650; VERT</button>
+          <button id="metric-time" type="button" class="metric-btn" aria-pressed="false">&#9201; TIME</button>
+        </div>
         <ul id="phase-legend" class="legend"></ul>
       </div>
       <div class="canvas-wrap">
@@ -84,7 +88,7 @@
         <div class="table-scroll">
           <table id="build-table">
             <thead>
-              <tr><th scope="col">WK</th><th scope="col">ISO</th><th scope="col">PHASE</th><th scope="col" id="th-target">TARGET m</th><th scope="col" id="th-actual">ACTUAL m</th><th scope="col">%</th></tr>
+              <tr><th scope="col">WK</th><th scope="col">ISO</th><th scope="col">PHASE</th><th scope="col" id="th-target">TARGET m</th><th scope="col" id="th-actual">ACTUAL m</th><th scope="col" id="th-status">%</th></tr>
             </thead>
             <tbody></tbody>
           </table>

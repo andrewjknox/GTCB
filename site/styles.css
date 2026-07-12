@@ -239,6 +239,39 @@ canvas {
   image-rendering: pixelated;
 }
 
+/* metric toggle — retro segmented switch [▲ VERT | ⏱ TIME] in the build panel head */
+.metric-toggle {
+  display: flex;
+  border: 1px solid #5955E0;
+}
+
+.metric-btn {
+  background: #000000;
+  border: 0;
+  color: #8076F1;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  cursor: pointer;
+}
+
+.metric-btn + .metric-btn { border-left: 1px solid #5955E0; }
+
+.metric-btn:hover,
+.metric-btn:focus {
+  color: #FFFFFF;
+  background: #5955E0;
+  outline: none;
+}
+
+.metric-btn.active { color: #000000; background: #65DBEF; }
+
+.metric-btn.active:hover,
+.metric-btn.active:focus { color: #000000; background: #65DBEF; }
+
 .legend {
   display: flex;
   flex-wrap: wrap;
@@ -282,6 +315,11 @@ td { color: #CCCCCC; }
 td.left, th.left { text-align: left; }
 
 tr.current td { color: #FFFFFF; font-weight: bold; }
+
+/* time-mode status glyphs (▼ ✓ ▲) vs the ToF target range */
+#build-table .ok { color: #3EB849; font-weight: bold; }
+#build-table .warn { color: #CCC35E; font-weight: bold; }
+#build-table .bad { color: #DB6559; font-weight: bold; }
 
 /* ---------- flags ---------- */
 
