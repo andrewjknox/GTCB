@@ -282,7 +282,63 @@ function renderHero(state) {
     num(sess.on_foot_count) + "/" + num(sess.count) + " <small>on foot</small>";
   $("stat-days").innerHTML = daysElapsed + " <small>of 7</small>";
 
+  renderCumulative(state);
+
   $("hero").classList.remove("hidden");
+}
+
+/* ---------- cumulative block position (completed weeks only) ----------
+   The week panel above judges the in-progress week; this line answers the
+   block-level question: across finished weeks, ahead or behind plan?
+   Concrete units only (no derived percentages), colour as the signal.
+   Only weeks with a summary count — targets are matched to those same weeks
+   so the comparison stays fair if a week's data is missing. */
+function renderCumulative(state) {
+  const el = $("hero-cumulative");
+  const curIso = state.current.iso_week;
+  const timeMode = isTime();
+  const planByIso = {};
+  for (const w of state.plan.weeks || []) planByIso[w.iso_week] = w;
+
+  let actual = 0, target = 0, counted = 0, lastTW = 0;
+  for (const wid of state.weekIds) {
+    if (wid === curIso) continue;
+    const s = state.byIso[wid];
+    const wk = planByIso[wid];
+    if (!s || !wk) continue;
+    if (timeMode) {
+      const t = tofTargetH(wk);
+      if (t === null) continue;
+      actual += s.time_on_feet ? num(s.time_on_feet.actual_s) : 0;
+      target += t * 3600;
+    } else {
+      actual += s.vert ? num(s.vert.actual_m) : 0;
+      target += num(wk.vert_target_m);
+    }
+    counted++;
+    lastTW = Math.max(lastTW, num(s.training_week));
+  }
+
+  if (counted === 0) {
+    el.innerHTML = "";
+    el.classList.add("hidden");
+    return;
+  }
+
+  const diff = actual - target;
+  const amount = timeMode
+    ? fmtHM(Math.abs(diff)) + " h:mm"
+    : fmtVert(Math.abs(diff)) + " " + vertUnit();
+  let verdict;
+  if (diff === 0) {
+    verdict = '<strong class="ok">ON PLAN</strong>';
+  } else if (diff > 0) {
+    verdict = '<strong class="ok">+' + amount + "</strong> AHEAD OF PLAN";
+  } else {
+    verdict = '<strong class="bad">−' + amount + "</strong> BEHIND PLAN";
+  }
+  el.innerHTML = "BLOCK THROUGH W" + lastTW + ": " + verdict;
+  el.classList.remove("hidden");
 }
 
 /* ---------- tooltip plumbing (shared by both canvases) ---------- */

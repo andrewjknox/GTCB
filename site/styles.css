@@ -199,6 +199,10 @@ h1 {
 .hero-secondary { margin-top: 8px; color: #CCCCCC; font-size: 12px; }
 .hero-secondary strong { color: #FFFFFF; }
 
+.hero-cumulative { margin-top: 6px; color: #CCCCCC; font-size: 12px; }
+.hero-cumulative .ok { color: #3EB849; }
+.hero-cumulative .bad { color: #DB6559; }
+
 /* chunky segmented progress bar */
 .progress-bar {
   display: flex;
