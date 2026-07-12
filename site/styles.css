@@ -992,9 +992,18 @@ tr.current-week td:first-child {
 
 /* course page */
 
-.profile-wrap { width: 100%; margin-top: 4px; }
+.profile-wrap {
+  width: 100%;
+  margin-top: 4px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
 
-.profile-svg { display: block; width: 100%; height: auto; }
+/* pan-y: vertical swipes still scroll the page; taps and horizontal drags
+   reach the pointer handlers to drive the crosshair */
+.profile-svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
 
 .profile-svg text { font-family: inherit; }
 
@@ -1011,6 +1020,7 @@ tr.current-week td:first-child {
 }
 
 .legend .swatch.mk-aid { background: #65DBEF; border-radius: 50%; }
+.legend .swatch.mk-food { background: #65DBEF; }
 .legend .swatch.mk-cutoff { background: #FF897D; }
 
 .tooltip .tip-dim { color: #8076F1; }

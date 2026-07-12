@@ -13,8 +13,8 @@
 
   /* palette (TMS9918) */
   var LINE = "#3EB849";      // medium green — elevation trace
-  var AID = "#65DBEF";       // cyan — aid-only station (circle)
-  var CUTOFF = "#FF897D";    // light red — hard cut-off control (square)
+  var AID = "#65DBEF";       // cyan — any station without a cut-off
+  var CUTOFF = "#FF897D";    // light red — hard cut-off control
   var GRID = "#5955E0";      // dark blue — structural, matches panel borders
   var INK = "#CCCCCC";
   var INK_DIM = "#8076F1";
@@ -79,6 +79,10 @@
   }
 
   function tipHide() { tip.classList.add("hidden"); }
+
+  /* reassigned per-render so it also hides the crosshair — touch taps leave
+     both showing until a scroll or a tap outside the chart */
+  var clearHover = tipHide;
 
   /* ---------- profile chart ---------- */
 
@@ -219,7 +223,7 @@
     /* hover layer: crosshair snaps to the nearest trace point.
        Added before the markers so their hit targets stay on top. */
     var overlay = el("rect", { x: m.left, y: m.top, width: pw, height: ph, fill: SURFACE, "fill-opacity": "0" }, svg);
-    overlay.addEventListener("pointermove", function (e) {
+    function overlayPoint(e) {
       var box = svg.getBoundingClientRect();
       var km = ((e.clientX - box.left) * (W / box.width) - m.left) / pw * maxKm;
       if (km < 0 || km > maxKm) { cross.setAttribute("visibility", "hidden"); tipHide(); return; }
@@ -242,22 +246,32 @@
         }
       }
       tipShow(lines, e.clientX, e.clientY);
-    });
+    }
+    overlay.addEventListener("pointermove", overlayPoint);
+    overlay.addEventListener("pointerdown", overlayPoint); // touch tap = desktop hover
     function overlayClear() {
       cross.setAttribute("visibility", "hidden");
       tipHide();
     }
-    overlay.addEventListener("pointerleave", overlayClear);
+    clearHover = overlayClear;
+    /* touch fires pointerleave on finger-up, which would kill the tap popup
+       immediately — for touch only scroll/tap-outside/cancel dismiss it */
+    overlay.addEventListener("pointerleave", function (e) {
+      if (e.pointerType !== "touch") overlayClear();
+    });
     overlay.addEventListener("pointercancel", overlayClear);
 
-    /* station markers — circles = aid, squares = hard cut-off (shape + colour) */
+    /* station markers — square = food + water (red when it's also a hard
+       cut-off), circle = liquid only. Every cut-off serves food + water, so
+       a red circle never occurs. The start carries no marker. */
     var mk = el("g", {}, svg);
     var R = narrow ? 4 : 5;
     for (i = 0; i < C.stations.length; i++) {
       (function (s) {
+        if (s.n === "S") return;
         var sx = X(s.x_km), sy = Y(s.y_ele);
-        if (s.hard) {
-          el("rect", { x: sx - R, y: sy - R, width: 2 * R, height: 2 * R, fill: CUTOFF, stroke: SURFACE, "stroke-width": "2" }, mk);
+        if (s.aid === "LS") {
+          el("rect", { x: sx - R, y: sy - R, width: 2 * R, height: 2 * R, fill: s.hard ? CUTOFF : AID, stroke: SURFACE, "stroke-width": "2" }, mk);
         } else {
           el("circle", { cx: sx, cy: sy, r: R, fill: AID, stroke: SURFACE, "stroke-width": "2" }, mk);
         }
@@ -269,7 +283,9 @@
           cross.setAttribute("visibility", "hidden");
           tipShow(stationLines(s), e.clientX, e.clientY);
         });
-        hit.addEventListener("pointerleave", tipHide);
+        hit.addEventListener("pointerleave", function (e) {
+          if (e.pointerType !== "touch") tipHide(); // keep the tap popup up
+        });
         hit.addEventListener("pointercancel", tipHide);
         hit.addEventListener("focus", function () {
           var r = hit.getBoundingClientRect();
@@ -350,13 +366,13 @@
   });
   window.addEventListener("gtcb:units", renderAll);
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") tipHide();
+    if (e.key === "Escape") clearHover();
   });
-  /* touch never fires pointerleave reliably: the fixed-position tip would stay
-     glued to the viewport while the page scrolls away underneath it */
-  window.addEventListener("scroll", tipHide, { passive: true, capture: true });
+  /* the fixed-position tip would otherwise stay glued to the viewport while
+     the page scrolls away underneath it */
+  window.addEventListener("scroll", function () { clearHover(); }, { passive: true, capture: true });
   document.addEventListener("pointerdown", function (e) {
-    if (!chartHost.contains(e.target)) tipHide();
+    if (!chartHost.contains(e.target)) clearHover();
   });
 
   renderAll();
