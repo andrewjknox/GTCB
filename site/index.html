@@ -49,6 +49,10 @@
     <section id="hero" class="panel hero hidden" aria-labelledby="hero-title">
       <div class="panel-head">
         <h2 id="hero-title">THIS WEEK</h2>
+        <div class="metric-toggle" role="group" aria-label="Dashboard metric">
+          <button id="metric-vert" type="button" class="metric-btn active" aria-pressed="true">&#9650; VERT</button>
+          <button id="metric-time" type="button" class="metric-btn" aria-pressed="false">&#9201; TIME</button>
+        </div>
         <span id="hero-badge" class="phase-badge"></span>
       </div>
       <div class="hero-grid">
@@ -56,7 +60,7 @@
           <div class="hero-vert">
             <span id="hero-actual" class="big-num">0</span>
             <span id="hero-unit" class="big-unit">m</span>
-            <span class="hero-vs">/ <span id="hero-prorated">0</span><span id="hero-vs-unit">m</span> THIS WEEK</span>
+            <span id="hero-vs" class="hero-vs">/ <span id="hero-prorated">0</span><span id="hero-vs-unit">m</span> THIS WEEK</span>
           </div>
           <div id="hero-pct" class="hero-pct"></div>
           <div id="progress-bar" class="progress-bar" role="img"></div>
@@ -74,10 +78,6 @@
     <section id="build-panel" class="panel hidden" aria-labelledby="build-title">
       <div class="panel-head">
         <h2 id="build-title">THE BUILD &middot; W1&ndash;W23</h2>
-        <div class="metric-toggle" role="group" aria-label="Chart metric">
-          <button id="metric-vert" type="button" class="metric-btn active" aria-pressed="true">&#9650; VERT</button>
-          <button id="metric-time" type="button" class="metric-btn" aria-pressed="false">&#9201; TIME</button>
-        </div>
         <ul id="phase-legend" class="legend"></ul>
       </div>
       <div class="canvas-wrap">

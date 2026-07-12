@@ -76,11 +76,10 @@ function setMetric(m) {
   try { localStorage.setItem(METRIC_KEY, m); } catch (e) { /* in-memory only */ }
 }
 
-/* ToF target range [min,max] hours -> "6–7h", "5h", "2.5h" */
-function fmtTofRange(t) {
-  const lo = num(t[0]);
-  const hi = num(t[1]);
-  return lo === hi ? lo + "h" : lo + "–" + hi + "h";
+/* ToF target: plan.json keeps a [min,max] hours range, but THE target is the
+   upper bound — collapse to a single value at display time ("7h", "2.5h") */
+function fmtTofTarget(t) {
+  return num(t[1]) + "h";
 }
 
 function statusClass(pct) {
@@ -155,56 +154,123 @@ function startCountdown() {
   setInterval(tick, 1000);
 }
 
-/* ---------- hero panel ---------- */
-function renderHero(cur) {
+/* ---------- hero panel (metric-aware: VERT or TIME headline) ---------- */
+function renderHero(state) {
+  const cur = state.current;
+  const timeMode = isTime();
   const vert = cur.vert || {};
-  const actual = num(vert.actual_m);
-  const target = num(vert.target_m);
-  const prorated = num(vert.prorated_target_m);
-  const pctPro = num(vert.pct_of_prorated);
-  const pctFull = num(vert.pct_of_target);
+  const tofActualS = cur.time_on_feet ? num(cur.time_on_feet.actual_s) : 0;
+  const daysElapsed = num(cur.days_elapsed);
+  const daysLeft = Math.max(0, 7 - daysElapsed);
+
+  /* plan week for the current summary — source of the single ToF target */
+  const planWk = (state.plan.weeks || []).find(
+    (w) => w.iso_week === cur.iso_week || num(w.week) === num(cur.training_week)
+  );
+  const tofTargetH = planWk && Array.isArray(planWk.tof_target_h)
+    ? num(planWk.tof_target_h[1])
+    : null;
 
   $("hero-title").textContent = "WEEK " + num(cur.training_week) + " · " + (cur.iso_week || "");
   const badge = $("hero-badge");
   badge.textContent = cur.phase || "?";
   badge.style.background = PHASE_COLORS[cur.phase] || C.gray;
 
-  $("hero-actual").textContent = fmtVert(actual);
-  $("hero-prorated").textContent = fmtVert(target);
-  $("hero-unit").textContent = vertUnit();
-  $("hero-vs-unit").textContent = vertUnit();
-
-  const cls = statusClass(pctPro);
-  $("hero-pct").innerHTML =
-    '<span class="' + cls + '">' + fmtInt(pctFull) + "% OF WEEK TARGET</span>";
+  const vs = $("hero-vs");
+  const bar = $("progress-bar");
 
   // chunky segmented progress bar vs full-week target (20 segments = 5% each),
   // colour-coded by pace status (pro-rated)
-  const bar = $("progress-bar");
-  bar.innerHTML = "";
-  bar.setAttribute("aria-label",
-    "Week-to-date vert " + fmtVert(actual) + " " + vertUnit() + ", " + fmtInt(pctFull) + "% of week target");
-  const filled = Math.min(20, Math.round(Math.min(pctFull, 100) / 5));
-  for (let i = 0; i < 20; i++) {
-    const seg = document.createElement("span");
-    seg.className = "seg" + (i < filled ? " fill-" + (pctFull >= 100 ? "over" : cls) : "");
-    bar.appendChild(seg);
+  const fillBar = (pctFull, cls) => {
+    bar.innerHTML = "";
+    const filled = Math.min(20, Math.round(Math.min(pctFull, 100) / 5));
+    for (let i = 0; i < 20; i++) {
+      const seg = document.createElement("span");
+      seg.className = "seg" + (i < filled ? " fill-" + (pctFull >= 100 ? "over" : cls) : "");
+      bar.appendChild(seg);
+    }
+  };
+
+  if (timeMode && tofTargetH === null) {
+    /* race week has no ToF target — actual only; no compare/pct/bar/to-go */
+    $("hero-actual").textContent = fmtHM(tofActualS);
+    $("hero-unit").textContent = "h:mm";
+    vs.classList.add("hidden");
+    $("hero-pct").innerHTML = "";
+    bar.innerHTML = "";
+    bar.classList.add("hidden");
+    bar.setAttribute("aria-label",
+      "Week-to-date time on feet " + fmtHM(tofActualS) + " h:mm, no time target this week");
+    $("hero-secondary").innerHTML = "";
+  } else if (timeMode) {
+    const targetS = tofTargetH * 3600;
+    const pctFull = targetS > 0 ? (tofActualS / targetS) * 100 : 0;
+    /* pace status vs the pro-rated share of the week, like vert's pct_of_prorated */
+    const proratedS = (targetS * daysElapsed) / 7;
+    const pctPro = proratedS > 0 ? (tofActualS / proratedS) * 100 : 100;
+    const cls = statusClass(pctPro);
+
+    $("hero-actual").textContent = fmtHM(tofActualS);
+    $("hero-unit").textContent = "h:mm";
+    vs.classList.remove("hidden");
+    $("hero-prorated").textContent = String(tofTargetH);
+    $("hero-vs-unit").textContent = "h";
+
+    $("hero-pct").innerHTML =
+      '<span class="' + cls + '">' + fmtInt(pctFull) + "% OF WEEK TARGET</span>";
+
+    bar.classList.remove("hidden");
+    fillBar(pctFull, cls);
+    bar.setAttribute("aria-label",
+      "Week-to-date time on feet " + fmtHM(tofActualS) + " h:mm, " + fmtInt(pctFull) + "% of week target");
+
+    const remainS = targetS - tofActualS;
+    $("hero-secondary").innerHTML = remainS > 0
+      ? "<strong>" + fmtHM(remainS) + "</strong> TO GO · " + daysLeft + (daysLeft === 1 ? " DAY" : " DAYS") + " LEFT"
+      : "TARGET HIT ▲ · <strong>+" + fmtHM(tofActualS - targetS) + "</strong> OVER";
+  } else {
+    const actual = num(vert.actual_m);
+    const target = num(vert.target_m);
+    const pctPro = num(vert.pct_of_prorated);
+    const pctFull = num(vert.pct_of_target);
+    const cls = statusClass(pctPro);
+
+    $("hero-actual").textContent = fmtVert(actual);
+    $("hero-unit").textContent = vertUnit();
+    vs.classList.remove("hidden");
+    $("hero-prorated").textContent = fmtVert(target);
+    $("hero-vs-unit").textContent = vertUnit();
+
+    $("hero-pct").innerHTML =
+      '<span class="' + cls + '">' + fmtInt(pctFull) + "% OF WEEK TARGET</span>";
+
+    bar.classList.remove("hidden");
+    fillBar(pctFull, cls);
+    bar.setAttribute("aria-label",
+      "Week-to-date vert " + fmtVert(actual) + " " + vertUnit() + ", " + fmtInt(pctFull) + "% of week target");
+
+    const remaining = Math.max(0, target - actual);
+    $("hero-secondary").innerHTML = remaining > 0
+      ? "<strong>" + fmtVert(remaining) + vertUnit() + "</strong> TO GO · " + daysLeft + (daysLeft === 1 ? " DAY" : " DAYS") + " LEFT"
+      : "TARGET HIT ▲ · <strong>+" + fmtVert(actual - target) + vertUnit() + "</strong> OVER";
   }
 
-  const remaining = Math.max(0, target - actual);
-  const daysLeft = Math.max(0, 7 - num(cur.days_elapsed));
-  $("hero-secondary").innerHTML = remaining > 0
-    ? "<strong>" + fmtVert(remaining) + vertUnit() + "</strong> TO GO · " + daysLeft + (daysLeft === 1 ? " DAY" : " DAYS") + " LEFT"
-    : "TARGET HIT ▲ · <strong>+" + fmtVert(actual - target) + vertUnit() + "</strong> OVER";
-
-  const tof = cur.time_on_feet || {};
+  /* stats row — the first stat swaps with the big number per mode */
+  const statFirst = $("stat-time");
+  const statFirstLabel = statFirst.parentElement.querySelector("dt");
+  if (timeMode) {
+    statFirstLabel.textContent = "VERT";
+    statFirst.innerHTML = fmtVert(vert.actual_m) + " <small>" + vertUnit() + "</small>";
+  } else {
+    statFirstLabel.textContent = "TIME ON FEET";
+    statFirst.innerHTML = fmtHM(tofActualS) + " <small>h:mm</small>";
+  }
   const dist = cur.distance || {};
   const sess = cur.sessions || {};
-  $("stat-time").innerHTML = fmtHM(tof.actual_s) + " <small>h:mm</small>";
   $("stat-dist").innerHTML = fmtDist(dist.actual_m) + " <small>" + distUnit() + "</small>";
   $("stat-sessions").innerHTML =
     num(sess.on_foot_count) + "/" + num(sess.count) + " <small>on foot</small>";
-  $("stat-days").innerHTML = num(cur.days_elapsed) + " <small>of 7</small>";
+  $("stat-days").innerHTML = daysElapsed + " <small>of 7</small>";
 
   $("hero").classList.remove("hidden");
 }
@@ -265,7 +331,7 @@ function drawBuildChart(state) {
   const ctx = canvas.getContext("2d");
   const timeMode = isTime();
   canvas.setAttribute("aria-label", timeMode
-    ? "Weekly time on feet versus target range, training weeks 1 to 23"
+    ? "Weekly time on feet versus target, training weeks 1 to 23"
     : "Weekly vertical gain versus target, training weeks 1 to 23");
 
   const weeks = state.plan.weeks;
@@ -342,22 +408,15 @@ function drawBuildChart(state) {
         ctx.fillRect(Math.round(x), Math.round(yA), barW, Math.round(yOf(0) - yA));
       }
 
-      // target range: hollow outline to range max + tick across the bar at range min
+      // target: hollow outline to the single target (upper bound of the plan range)
       if (tof) {
         ctx.strokeStyle = isCur ? C.white : C.gray;
         ctx.lineWidth = 1;
         const yT = Math.round(yOf(num(tof[1]))) + 0.5;
         ctx.strokeRect(Math.round(x) + 0.5, yT, barW - 1, Math.round(yOf(0)) - yT);
-        if (num(tof[0]) !== num(tof[1])) {
-          const yMin = Math.round(yOf(num(tof[0]))) + 0.5;
-          ctx.beginPath();
-          ctx.moveTo(Math.round(x) + 0.5, yMin);
-          ctx.lineTo(Math.round(x) + barW - 0.5, yMin);
-          ctx.stroke();
-        }
       }
 
-      // current week: pro-rated pace tick (range max × days elapsed / 7) + white marker
+      // current week: pro-rated pace tick (target × days elapsed / 7) + white marker
       if (isCur && s && tof) {
         const paceS = num(tof[1]) * 3600 * num(s.days_elapsed) / 7;
         const yP = Math.round(yOf(paceS / 3600)) + 0.5;
@@ -376,13 +435,13 @@ function drawBuildChart(state) {
       }
 
       if (actualH !== null) {
-        text += "\nTOF " + fmtHM(actualS) + (tof ? " / " + fmtTofRange(tof) : "");
+        text += "\nTOF " + fmtHM(actualS) + (tof ? " / " + fmtTofTarget(tof) : "");
         if (isCur && tof) {
           const paceS = num(tof[1]) * 3600 * num(s.days_elapsed) / 7;
           text += "\nIN PROGRESS · PACE LINE " + fmtHM(paceS) + " h:mm";
         }
       } else if (tof) {
-        text += "\nTARGET " + fmtTofRange(tof) + " · NO DATA YET";
+        text += "\nTARGET " + fmtTofTarget(tof) + " · NO DATA YET";
       } else {
         text += "\nNO TOF TARGET";
       }
@@ -509,10 +568,11 @@ function renderBuildTable(state) {
   }
 }
 
-/* time-on-feet table: target range, actual h:mm, and a status glyph vs the range —
-   no derived percentages (concrete units only) */
+/* time-on-feet table: single target ("7h" — the plan range's upper bound),
+   actual h:mm, and a status glyph vs that target — no derived percentages
+   (concrete units only) */
 function renderBuildTableTime(state) {
-  $("th-target").textContent = "TARGET h";
+  $("th-target").textContent = "TARGET";
   $("th-actual").textContent = "ACTUAL h:mm";
   $("th-status").textContent = "VS";
   const tbody = $("build-table").querySelector("tbody");
@@ -523,19 +583,16 @@ function renderBuildTableTime(state) {
     const tr = document.createElement("tr");
     if (wk.week === curTW) tr.className = "current";
     const tof = Array.isArray(wk.tof_target_h) ? wk.tof_target_h : null;
-    const target = tof ? fmtTofRange(tof) : "—";
+    const target = tof ? fmtTofTarget(tof) : "—";
     const actualS = s && s.time_on_feet ? num(s.time_on_feet.actual_s) : null;
     const actual = actualS !== null ? fmtHM(actualS) : "—";
     let status = "—";
     if (actualS !== null && tof) {
-      const h = actualS / 3600;
-      if (h < num(tof[0])) {
-        // in-progress week below min is expected mid-week -> warn, not bad
-        status = '<span class="' + (wk.week === curTW ? "warn" : "bad") + '">▼</span>';
-      } else if (h > num(tof[1])) {
-        status = '<span class="ok">▲</span>';
-      } else {
+      if (actualS / 3600 >= num(tof[1])) {
         status = '<span class="ok">✓</span>';
+      } else {
+        // in-progress week below target is expected mid-week -> warn, not bad
+        status = '<span class="' + (wk.week === curTW ? "warn" : "bad") + '">▼</span>';
       }
     }
     tr.innerHTML =
@@ -706,8 +763,8 @@ function renderFooter(cur) {
   $("site-footer").classList.remove("hidden");
 }
 
-/* ---------- metric toggle (▲ VERT | ⏱ TIME) — one shared state for
-   build chart + build table + daily strip ---------- */
+/* ---------- metric toggle (▲ VERT | ⏱ TIME) — page-level mode in the hero
+   head, one shared state for hero + build chart + build table + daily strip ---------- */
 function initMetricToggle(state) {
   const btnVert = $("metric-vert");
   const btnTime = $("metric-time");
@@ -722,6 +779,7 @@ function initMetricToggle(state) {
     if (m === metric) return;
     setMetric(m);
     apply();
+    renderHero(state);
     drawBuildChart(state);
     renderBuildTable(state);
     drawDailyChart(state);
@@ -751,7 +809,7 @@ async function main() {
 
   $("boot-msg").classList.add("hidden");
   initMetricToggle(state);
-  renderHero(state.current);
+  renderHero(state);
   renderLegend(state.plan);
   drawBuildChart(state);
   renderBuildTable(state);
@@ -773,7 +831,7 @@ async function main() {
 
   // nav.js unit toggle — re-render everything that shows a number
   window.addEventListener("gtcb:units", () => {
-    renderHero(state.current);
+    renderHero(state);
     drawBuildChart(state);
     renderBuildTable(state);
     drawDailyChart(state);

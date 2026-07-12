@@ -154,6 +154,15 @@ h1 {
   text-transform: uppercase;
 }
 
+/* hero head: title · metric toggle · phase badge — buttons need centre
+   alignment, not the text-baseline the other panel heads use */
+.hero .panel-head { align-items: center; }
+
+@media (max-width: 640px) {
+  /* narrow: title takes its own row; toggle + badge share the next */
+  .hero .panel-head h2 { flex: 1 1 100%; }
+}
+
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -239,7 +248,8 @@ canvas {
   image-rendering: pixelated;
 }
 
-/* metric toggle — retro segmented switch [▲ VERT | ⏱ TIME] in the build panel head */
+/* metric toggle — retro segmented switch [▲ VERT | ⏱ TIME] in the hero panel
+   head; a page-level mode control shared by hero + build chart + table + daily */
 .metric-toggle {
   display: flex;
   border: 1px solid #5955E0;
@@ -316,7 +326,7 @@ td.left, th.left { text-align: left; }
 
 tr.current td { color: #FFFFFF; font-weight: bold; }
 
-/* time-mode status glyphs (▼ ✓ ▲) vs the ToF target range */
+/* time-mode status glyphs (▼ ✓) vs the single ToF target */
 #build-table .ok { color: #3EB849; font-weight: bold; }
 #build-table .warn { color: #CCC35E; font-weight: bold; }
 #build-table .bad { color: #DB6559; font-weight: bold; }
