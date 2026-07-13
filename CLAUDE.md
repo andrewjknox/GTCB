@@ -45,7 +45,7 @@ Static dashboard (HTML/JS/Canvas + JSON, no framework) tracking a 23-week ultra 
 - Phases: Base W1–8, Build W9–16, Peak W17–19, Taper W20–22, Race W23.
 - All dates Europe/London; week = Mon 00:00 → Sun 23:59:59.
 - Data files are named by ISO week (`2026-W28.json`).
-- On-foot sport types: Run, TrailRun, VirtualRun, Walk, Hike.
+- On-foot sport types: Run, TrailRun, VirtualRun, Hike. (Walk excluded — running + hiking only, owner decision 2026-07-13; note some Strava activities are mislabeled `Walk` and will not count until relabeled.)
 - Left-calf rehab is active — activity descriptions mentioning calf issues must be surfaced as flags.
 
 ## Data shapes

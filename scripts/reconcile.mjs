@@ -9,7 +9,8 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 
-export const ON_FOOT = new Set(["Run", "TrailRun", "VirtualRun", "Walk", "Hike"]);
+// Walk deliberately excluded: totals count running + hiking only (owner decision 2026-07-13).
+export const ON_FOOT = new Set(["Run", "TrailRun", "VirtualRun", "Hike"]);
 
 // ---------- shared date helpers ----------
 

@@ -5,7 +5,7 @@
 Implement Gate B (read CLAUDE.md "Data shapes" first). Two dependency-free Node scripts plus the hook:
 
 - `scripts/reconcile.mjs` — shared module exporting `reconcileWeek(raw, plan)` that recomputes, from a raw week file and `data/plan.json`:
-  - on-foot activities = `sport_type` ∈ {Run, TrailRun, VirtualRun, Walk, Hike};
+  - on-foot activities = `sport_type` ∈ {Run, TrailRun, VirtualRun, Hike} (Walk excluded — running + hiking only);
   - `vert_actual_m` = Σ elevation_gain_m (on-foot), `time_on_feet_s` = Σ moving_time_s (on-foot), `distance_m` = Σ distance_m (on-foot), `sessions_count` = all activities, `on_foot_count`, and per-day (Mon–Sun) vert/time/distance buckets by `start_date_local`.
   Also runnable directly (`node scripts/reconcile.mjs 2026-W28`) printing the recomputed numbers.
 - `scripts/gates/gate-b.mjs` — validate every `data/summary/*.json` except `index.json`:
@@ -26,7 +26,7 @@ You are analyst-agent (charter: `.claude/agents/analyst-agent.md`; shapes: CLAUD
 
 1. Read `data/plan.json` and every `data/raw/2026-W2[4-8].json`.
 2. For each week write `data/summary/<iso_week>.json` per the summary schema. Rules:
-   - On-foot sport types: Run, TrailRun, VirtualRun, Walk, Hike. `vert.actual_m`, `time_on_feet.actual_s`, `distance.actual_m` sum on-foot activities only; `sessions.count` counts ALL activities in the window, `sessions.on_foot_count` on-foot only.
+   - On-foot sport types: Run, TrailRun, VirtualRun, Hike (Walk excluded — running + hiking only). `vert.actual_m`, `time_on_feet.actual_s`, `distance.actual_m` sum on-foot activities only; `sessions.count` counts ALL activities in the window, `sessions.on_foot_count` on-foot only.
    - `target_m`/`phase`/`training_week` from plan.json. `days_elapsed`: 7 for completed weeks; for the current week (2026-W28, today is Thu 2026-07-09 Europe/London) it is 4. `prorated_target_m` = round(target·days_elapsed/7). `pct_of_target` = round(100·actual/target); `pct_of_prorated` = round(100·actual/prorated). Integers.
    - `daily`: exactly 7 entries Mon..Sun (ISO dates), zeros for empty/future days, on-foot sums only.
    - `flags`: (a) `calf` — any activity description mentioning the left-calf rehab (keywords: calf, physio, niggle, strain, tight/tightness; quote the relevant snippet + activity name/date in `detail`); (b) `anomaly` — completed week with actual vert < 60% of target, or zero on-foot sessions across any 3+ consecutive days in a completed week (likely missed sessions); (c) none otherwise. Keep details factual, no coaching advice.
