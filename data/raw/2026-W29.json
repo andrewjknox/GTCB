@@ -1,0 +1,56 @@
+{
+  "iso_week": "2026-W29",
+  "training_week": 6,
+  "window": {
+    "start": "2026-07-13T00:00:00",
+    "end": "2026-07-19T23:59:59",
+    "tz": "Europe/London"
+  },
+  "fetched_at": "2026-07-15T14:25:00Z",
+  "activities": [
+    {
+      "id": 19318900700,
+      "name": "Morning Trail Run 🌄",
+      "sport_type": "TrailRun",
+      "start_date_local": "2026-07-15T04:55:03",
+      "distance_m": 17107,
+      "moving_time_s": 8258,
+      "elapsed_time_s": 8659,
+      "elevation_gain_m": 803,
+      "description": "+ 6 hiking reps ⛰️ Higher Moor (1,319 ft) | 🌐 summitbag.com"
+    },
+    {
+      "id": 19298850411,
+      "name": "Club Run",
+      "sport_type": "TrailRun",
+      "start_date_local": "2026-07-13T18:57:57",
+      "distance_m": 5866,
+      "moving_time_s": 2233,
+      "elapsed_time_s": 2240,
+      "elevation_gain_m": 24,
+      "description": null
+    },
+    {
+      "id": 19292527575,
+      "name": "Morning Walk",
+      "sport_type": "Walk",
+      "start_date_local": "2026-07-13T10:33:38",
+      "distance_m": 3797,
+      "moving_time_s": 2575,
+      "elapsed_time_s": 3513,
+      "elevation_gain_m": 10,
+      "description": null
+    },
+    {
+      "id": 19291206188,
+      "name": "20:00 row",
+      "sport_type": "Rowing",
+      "start_date_local": "2026-07-13T08:43:00",
+      "distance_m": 4487,
+      "moving_time_s": 1200,
+      "elapsed_time_s": 1200,
+      "elevation_gain_m": 0,
+      "description": null
+    }
+  ]
+}

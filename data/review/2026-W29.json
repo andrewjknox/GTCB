@@ -1,0 +1,16 @@
+{
+  "verdict": "pass",
+  "iso_week": "2026-W29",
+  "reviewed_at": "2026-07-15T18:40:00+01:00",
+  "checks": [
+    { "invariant": "1", "result": "pass", "detail": "Pipeline ran as scoped subagents (data-agent -> analyst-agent -> builder-agent -> reviewer-agent); no orchestrator-authored analysis or coding in data/ or site/. Verdict persistence to data/review/ is mechanical transcription of the read-only reviewer's returned verdict." },
+    { "invariant": "2", "result": "pass", "detail": "Data flows raw -> summary -> site only. raw->summary math reconciles: on-foot vert 827m from Run/TrailRun/Hike; Walk and Rowing excluded from on-foot totals; sessions.count=4 counts all activities, on_foot_count counts on-foot only. site/ summary+index+plan verified byte-identical mirror of data/. No builder read of Strava, no analyst HTML." },
+    { "invariant": "3", "result": "pass", "detail": "All #hex color literals in site/ styling belong to the 15 TMS9918 palette values; Gate C palette check passed." },
+    { "invariant": "3a", "result": "pass", "detail": "grep for href=\"/ and src=\"/ across site/ returned zero matches; index.html and script/style tags use relative paths (styles.css, data.js, app.min.js). Gate C relative-urls check passed." },
+    { "invariant": "4", "result": "pass", "detail": "window = 2026-07-13T00:00:00 to 2026-07-19T23:59:59 Europe/London (Mon-Sun) in both raw and summary; ISO week 29 start (2026-07-13) matches; days_elapsed=3 consistent with generation on Wed 2026-07-15; prorated_target_m = 2200*3/7." },
+    { "invariant": "5", "result": "pass", "detail": "data/plan.json week 6 entry (iso_week 2026-W29, phase Base, vert_target_m 2200, tof_target_h 8) matches summary target_m 2200 and phase Base; plan.json untouched by this run's agents." },
+    { "invariant": "6", "result": "pass", "detail": "No credentials present in repo; Strava auth via MCP, no keys written to data/ or site/." },
+    { "invariant": "7", "result": "pass", "detail": "Run will be published as a single commit with a conventional message (refresh: 2026-W29 (mid-week)); no violation at review time." }
+  ],
+  "reasons": []
+}
