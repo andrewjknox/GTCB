@@ -771,11 +771,19 @@
       updateYou();
     }));
   }
-  /* flip the PREDICTED toggle without rendering — callers render once after */
+  /* flip the PREDICTED toggle without rendering — callers render once after.
+     Engaging snaps the (disabled) slider to the predicted time, so the thumb
+     agrees with the readout and releasing hands over a matching manual target. */
   function setPred(on) {
     if (!PRED) return;
     predBtn.setAttribute("aria-pressed", on ? "true" : "false");
-    if (targetSlider) targetSlider.disabled = on;
+    if (targetSlider) {
+      targetSlider.disabled = on;
+      if (on) {
+        var lo = parseFloat(targetSlider.min) || 16, hi = parseFloat(targetSlider.max) || 24;
+        targetSlider.value = String(Math.min(hi, Math.max(lo, Math.round(PRED.finH * 4) / 4)));
+      }
+    }
     if (predNote) predNote.hidden = !on;
   }
 
