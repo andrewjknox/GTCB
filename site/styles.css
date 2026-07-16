@@ -1085,14 +1085,11 @@ tr.current-week td:first-child {
 
 .planner-table tr.hard td { color: #FFFFFF; }
 
-.planner-table .buf-ok { color: #3EB849; font-weight: bold; }
-.planner-table .buf-tight { color: #CCC35E; font-weight: bold; }
-.planner-table .buf-bad { color: #FF897D; font-weight: bold; }
-.planner-table .buf-neg { color: #DB6559; font-weight: bold; }
-
-.table-note .buf-ok { color: #3EB849; font-weight: bold; }
-.table-note .buf-tight { color: #CCC35E; font-weight: bold; }
-.table-note .buf-bad { color: #FF897D; font-weight: bold; }
+/* buffer tiers — one definition serves the planner cells and the legend */
+.buf-ok { color: #3EB849; font-weight: bold; }
+.buf-tight { color: #CCC35E; font-weight: bold; }
+.buf-bad { color: #FF897D; font-weight: bold; }
+.buf-neg { color: #DB6559; font-weight: bold; }
 
 .profile-svg .you-label {
   fill: #DED087;
