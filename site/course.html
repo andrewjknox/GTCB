@@ -41,13 +41,16 @@
         <h2 id="planner-title">PACE PLANNER</h2>
         <span class="tier-badge tag-dsq">Miss one = out</span>
       </div>
-      <p>Pick a target finish time. The planner places you on the course by cumulative <strong>effort</strong> &mdash; climb-weighted, not raw distance &mdash; anchored so the 24-hour line reproduces the official cut-off schedule exactly. <strong>Buffer</strong> is how long you would have in hand at each hard cut-off. Because that schedule is itself exactly 24-hour limit pace, each control&rsquo;s closing time is also its drop-dead departure time &mdash; so the cushion that matters is the buffer. The official cut-offs are always the reference.</p>
+      <p>Pick a target finish time. The planner places you on the course by cumulative <strong>effort</strong> &mdash; climb-weighted, not raw distance &mdash; anchored so the 24-hour line reproduces the official cut-off schedule exactly. <strong>Buffer</strong> is how long you would have in hand at each hard cut-off. Because that schedule is itself exactly 24-hour limit pace, each control&rsquo;s closing time is also its drop-dead departure time &mdash; so the cushion that matters is the buffer. The official cut-offs are always the reference. <strong>PREDICTED</strong> swaps the chosen target for a modelled one: arrival at every control walked from the Costa Blanca Trails 46K pace-vs-grade record and current training, not from a number you picked.</p>
       <div class="planner-controls">
         <div class="planner-slider">
           <label for="target-slider">Target finish time</label>
           <output id="target-readout" for="target-slider"></output>
           <input type="range" id="target-slider" min="16" max="24" step="0.25" value="22" aria-label="Target finish time in hours">
-          <button type="button" id="cutoff-preset" class="metric-btn">CUT-OFF PACE (24:00)</button>
+          <div class="metric-toggle preset-row">
+            <button type="button" id="cutoff-preset" class="metric-btn">CUT-OFF PACE (24:00)</button>
+            <button type="button" id="pred-toggle" class="metric-btn" aria-pressed="false" hidden>PREDICTED</button>
+          </div>
         </div>
         <div class="planner-slider">
           <label for="raceclock-slider">Race clock &mdash; you are here</label>
@@ -55,6 +58,7 @@
           <input type="range" id="raceclock-slider" min="0" max="1440" step="5" value="0" aria-label="Race clock, minutes elapsed from the Friday 23:00 start">
         </div>
       </div>
+      <p class="table-note pred-note" id="pred-note" hidden></p>
       <div class="table-scroll">
         <table id="planner-table" class="cutoff-table planner-table"></table>
       </div>
@@ -81,6 +85,7 @@
 
   <script src="nav.js"></script>
   <script src="course-data.js"></script>
+  <script src="data.js"></script>
   <script src="course.js"></script>
 </body>
 </html>

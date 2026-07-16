@@ -1079,7 +1079,24 @@ tr.current-week td:first-child {
   cursor: pointer;
 }
 
-#cutoff-preset { margin-top: 10px; }
+.preset-row {
+  margin-top: 10px;
+  display: inline-flex;
+}
+
+/* PREDICTED is a latching toggle — pressed reads like the metric switch */
+.metric-btn[aria-pressed="true"] { color: #000000; background: #DED087; }
+
+.metric-btn[aria-pressed="true"]:hover,
+.metric-btn[aria-pressed="true"]:focus { color: #000000; background: #DED087; }
+
+.planner-slider input[type="range"]:disabled {
+  accent-color: #5955E0;
+  cursor: default;
+  opacity: 0.5;
+}
+
+.pred-note { color: #DED087; }
 
 .planner-table { min-width: 640px; }
 

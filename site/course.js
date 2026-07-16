@@ -194,6 +194,7 @@
   /* normalised effort-fraction at a km: piecewise-linear rescale of the raw
      effort curve so each hard-control km lands exactly on its official frac */
   function fracAtKm(km) {
+    if (predOn()) return predMinAtKm(km) / (PRED.finH * 60);
     var re = effortAtKm(km);
     if (re <= anchors[0].rawEff) return anchors[0].frac;
     for (var i = 1; i < anchors.length; i++) {
@@ -207,6 +208,7 @@
   /* invert: km for a normalised effort fraction (drives the "you are here" mark) */
   function kmAtFrac(f) {
     f = Math.max(0, Math.min(1, f));
+    if (predOn()) return predKmAtMin(f * PRED.finH * 60);
     var i = 1;
     while (i < anchors.length && f > anchors[i].frac) i++;
     if (i >= anchors.length) return maxKm;
@@ -253,6 +255,121 @@
       closeMin: closeMin,
       bufMin: closeMin === null ? null : Math.round(closeMin - arriveMin),
     };
+  }
+
+  /* ---------- predicted mode — 46K pace-vs-grade model ---------- */
+  /* data.js carries paceModel: a moving-speed-by-grade curve fitted from the
+     Costa Blanca Trails 46K (Nov 2022, same mountains) plus its knobs — aid
+     stoppage, flat ultra fade, night slowdown, and a readiness mapping fed by
+     recent training weeks. Walking the curve over the track gives an absolute
+     per-station arrival prediction, unlike the cut-off-anchored effort curve
+     above, which distributes a chosen finish time. When the PREDICTED toggle
+     is on, targetH/fracAtKm/kmAtFrac dispatch here and everything downstream
+     (table, tooltips, you-are-here) follows. */
+
+  var predBtn = document.getElementById("pred-toggle");
+  var predNote = document.getElementById("pred-note");
+  var PRED = null; // { cum: predicted minutes at each track index, finH }
+
+  (function () {
+    var D = window.GTCB_DATA;
+    var model = D && D.paceModel;
+    if (!model || !predBtn) return;
+
+    /* readiness: vert attainment over the last N completed training weeks,
+       mapped to a speed factor (floor + span * attainment, capped at 1) */
+    var att = 1, attLabel = "no completed training weeks yet — assuming on plan";
+    (function () {
+      var weeks = (D.index && D.index.weeks) || [];
+      var done = [];
+      for (var i = 0; i < weeks.length; i++) {
+        var s = D.summaries[weeks[i]];
+        if (s && s.days_elapsed >= 7 && s.vert && s.vert.target_m > 0) done.push(s);
+      }
+      done = done.slice(-model.readiness.weeks);
+      if (!done.length) return;
+      var act = 0, tgt = 0;
+      for (var j = 0; j < done.length; j++) { act += done[j].vert.actual_m; tgt += done[j].vert.target_m; }
+      att = Math.max(0, Math.min(1, act / tgt));
+      attLabel = done[0].iso_week.slice(5) + "–" + done[done.length - 1].iso_week.slice(5) +
+        " vert " + Math.round((act / tgt) * 100) + "% of plan";
+    })();
+    var speedFactor = model.readiness.floor + model.readiness.span * att;
+
+    var curve = model.curve;
+    /* beyond the end bins speed extends at constant vertical rate — on very
+       steep ground climb/descent metres-per-hour plateau, they don't clamp */
+    function speedAt(g) {
+      var lo = curve[0], hi = curve[curve.length - 1];
+      if (g < lo.g) return (lo.v * Math.abs(lo.g)) / Math.abs(g);
+      if (g > hi.g) return (hi.v * hi.g) / g;
+      for (var i = 1; i < curve.length; i++) {
+        if (g <= curve[i].g) {
+          var a = curve[i - 1], b = curve[i];
+          return a.v + ((g - a.g) / (b.g - a.g)) * (b.v - a.v);
+        }
+      }
+      return hi.v;
+    }
+
+    /* the raw trace over-reads climb vs the official figure (GPS noise) but
+       the 46K curve was fitted on clean barometric data — normalise grades
+       so total climb matches the organisers' number */
+    var climb = 0;
+    for (var k = 1; k < track.length; k++) {
+      var de = track[k][1] - track[k - 1][1];
+      if (de > 0) climb += de;
+    }
+    var norm = (C.official && C.official.gain_m ? C.official.gain_m : climb) / climb;
+
+    var cum = [0], tMin = 0;
+    for (k = 1; k < track.length; k++) {
+      var dm = (track[k][0] - track[k - 1][0]) * 1000;
+      if (dm > 0) {
+        var g = ((track[k][1] - track[k - 1][1]) * norm) / dm * 100;
+        var dt = dm / (speedAt(g) * speedFactor) / 60;  // moving minutes
+        dt *= model.stop_ratio * model.fade;            // aid stops + ultra fade
+        var clock = (START_MIN + tMin) % 1440;
+        if (clock >= model.night.sunset_min || clock < model.night.sunrise_min) dt *= model.night.mult;
+        tMin += dt;
+      }
+      cum[k] = tMin;
+    }
+
+    PRED = { cum: cum, finH: tMin / 60 };
+    predBtn.hidden = false;
+    predBtn.textContent = "PREDICTED (" + fmtDur(PRED.finH) + ")";
+    if (predNote) {
+      predNote.textContent = "PREDICTED " + fmtDur(PRED.finH) + " — pace-vs-grade from the CB Trails 46K (Nov 2022, " +
+        "same mountains) walked over the 102K, with the 46K's aid-stop ratio, +" +
+        Math.round((model.fade - 1) * 100) + "% ultra fade for double the equivalent distance, +" +
+        Math.round((model.night.mult - 1) * 100) + "% in darkness, × " +
+        Math.round(speedFactor * 100) + "% readiness from training (" + attLabel + "). " +
+        "Arrivals are absolute — the target slider is bypassed while this is on.";
+    }
+  })();
+
+  function predOn() {
+    return !!PRED && predBtn.getAttribute("aria-pressed") === "true";
+  }
+  function predMinAt(i) { return PRED.cum[i]; }
+  function predMinAtKm(km) {
+    var cum = PRED.cum;
+    if (km <= track[0][0]) return 0;
+    if (km >= maxKm) return cum[cum.length - 1];
+    var b = bracket(trackKmAt, track.length, km), lo = b[0], hi = b[1];
+    var span = track[hi][0] - track[lo][0];
+    var t = span > 0 ? (km - track[lo][0]) / span : 0;
+    return cum[lo] + t * (cum[hi] - cum[lo]);
+  }
+  function predKmAtMin(min) {
+    var cum = PRED.cum, total = cum[cum.length - 1];
+    if (min <= 0) return track[0][0];
+    if (min >= total) return maxKm;
+    var b = bracket(predMinAt, cum.length, min), lo = b[0], hi = b[1];
+    var span = cum[hi] - cum[lo];
+    var t = span > 0 ? (min - cum[lo]) / span : 0;
+    return track[lo][0] + t * (track[hi][0] - track[lo][0]);
   }
 
   function gradientAt(idx) {
@@ -562,8 +679,13 @@
   var plannerHost = document.getElementById("planner-table");
   var cutoffBtn = document.getElementById("cutoff-preset");
 
-  /* the sliders are the single source of truth for the planner state */
-  function targetH() { return (targetSlider && parseFloat(targetSlider.value)) || 22; }
+  /* the sliders are the single source of truth for the planner state —
+     except in predicted mode, where the model's finish time takes over and
+     the target slider is disabled until the toggle is released */
+  function targetH() {
+    if (predOn()) return PRED.finH;
+    return (targetSlider && parseFloat(targetSlider.value)) || 22;
+  }
   function raceMin() { return raceSlider ? parseFloat(raceSlider.value) || 0 : 0; }
   function raceFrac() { return (raceMin() / 60) / targetH(); }
 
@@ -582,7 +704,7 @@
   function renderReadouts() {
     if (targetOut) {
       targetOut.textContent = "";
-      outSpan(targetOut, null, "TARGET " + fmtDur(targetH()) + " ");
+      outSpan(targetOut, null, (predOn() ? "PREDICTED " : "TARGET ") + fmtDur(targetH()) + " ");
       outSpan(targetOut, "finish", "→ FINISH " + fmtClock(targetH() * 60));
     }
     if (raceOut) {
@@ -649,9 +771,25 @@
       updateYou();
     }));
   }
+  /* flip the PREDICTED toggle without rendering — callers render once after */
+  function setPred(on) {
+    if (!PRED) return;
+    predBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    if (targetSlider) targetSlider.disabled = on;
+    if (predNote) predNote.hidden = !on;
+  }
+
   if (cutoffBtn && targetSlider) {
     cutoffBtn.addEventListener("click", function () {
+      setPred(false); // cut-off pace is a manual target — release predicted mode
       targetSlider.value = "24";
+      renderPlanner();
+      updateYou();
+    });
+  }
+  if (predBtn) {
+    predBtn.addEventListener("click", function () {
+      setPred(!predOn());
       renderPlanner();
       updateYou();
     });
