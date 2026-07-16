@@ -161,16 +161,20 @@
     return abs - 1380; // Fri 23:00 sits 1380 min into Friday
   }
 
-  /* hard controls are the anchors: frac = closes / 24 h, rawEff = effort at km */
-  var anchors = [];
+  /* hard controls are the anchors: frac = closes / 24 h, rawEff = effort at km.
+     The start (frac 0) and finish (frac 1) anchors are explicit, not read from
+     the station rows — anchors always has ≥2 entries bounding [0,1], so the
+     model degrades to the pure effort curve if no closes string parses. */
+  var anchors = [{ km: track[0][0], rawEff: 0, frac: 0 }];
   (function () {
     for (var i = 0; i < C.stations.length; i++) {
       var st = C.stations[i];
       if (!st.hard || !st.closes) continue;
       var cm = closesToMin(st.closes);
-      if (cm === null) continue;
+      if (cm === null || cm <= 0 || cm > LIMIT_MIN) continue;
       anchors.push({ km: st.x_km, rawEff: effortAtKm(st.x_km), frac: cm / LIMIT_MIN });
     }
+    anchors.push({ km: maxKm, rawEff: totalEff, frac: 1 });
   })();
 
   /* normalised effort-fraction at a km: piecewise-linear rescale of the raw
@@ -241,8 +245,7 @@
     if (s.closes) lines.push({ text: "Closes " + s.closes });
     /* pace-planner arrival at the chosen finish time */
     var frac = fracAtKm(s.x_km);
-    var arr = s.n === "S" ? "23:00 FRI" : fmtClock(frac * planTargetH * 60);
-    lines.push({ text: "Arrive ~" + arr + " (" + fmtDur(planTargetH) + " pace)" });
+    lines.push({ text: "Arrive ~" + fmtClock(frac * planTargetH * 60) + " (" + fmtDur(planTargetH) + " pace)" });
     if (s.hard && s.closes && s.n !== "S") {
       var buf = closesToMin(s.closes) - frac * planTargetH * 60;
       lines.push({ text: "Buffer " + fmtBuf(buf) });
@@ -576,7 +579,7 @@
       td(tr, s.n, "left");
       td(tr, s.name, "left");
       td(tr, fmtDist(s.km), "num");
-      td(tr, s.n === "S" ? "23:00 FRI" : fmtClock(frac * planTargetH * 60), "num");
+      td(tr, fmtClock(frac * planTargetH * 60), "num");
       if (isCut) {
         var closeMin = closesToMin(s.closes);
         var buf = closeMin - frac * planTargetH * 60;
