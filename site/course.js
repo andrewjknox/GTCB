@@ -627,17 +627,27 @@
     if (chartAPI) chartAPI.refreshLabels();
   }
 
+  /* collapse event bursts (slider drags, resize) to one run per frame */
+  function coalesce(fn) {
+    var pending = false;
+    return function () {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () { pending = false; fn(); });
+    };
+  }
+
   if (targetSlider) {
-    targetSlider.addEventListener("input", function () {
+    targetSlider.addEventListener("input", coalesce(function () {
       renderPlanner();
       updateYou();
-    });
+    }));
   }
   if (raceSlider) {
-    raceSlider.addEventListener("input", function () {
+    raceSlider.addEventListener("input", coalesce(function () {
       renderReadouts();
       updateYou();
-    });
+    }));
   }
   if (cutoffBtn && targetSlider) {
     cutoffBtn.addEventListener("click", function () {
@@ -651,11 +661,7 @@
 
   function renderAll() { renderChart(); renderTable(); renderPlanner(); }
 
-  var raf = null;
-  window.addEventListener("resize", function () {
-    if (raf) return;
-    raf = requestAnimationFrame(function () { raf = null; renderChart(); });
-  });
+  window.addEventListener("resize", coalesce(renderChart));
   window.addEventListener("gtcb:units", renderAll);
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") clearHover();
