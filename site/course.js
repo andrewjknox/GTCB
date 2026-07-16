@@ -153,12 +153,21 @@
   }
 
   var LIMIT_MIN = (C.official && C.official.limit_h ? C.official.limit_h : 24) * 60;
-  /* "HH:MM DAY" -> elapsed minutes from the Fri 23:00 start */
+
+  /* race epoch — single source: C.official.start ("FRI 13 NOV 2026 23:00").
+     START_MIN is absolute minutes from 00:00 on DAYS[0]. */
+  var DAYS = ["FRI", "SAT", "SUN"];
+  var startMtch = /^([A-Z]{3})\b.*?(\d{1,2}):(\d{2})\s*$/.exec((C.official && C.official.start) || "");
+  var START_MIN = startMtch
+    ? Math.max(0, DAYS.indexOf(startMtch[1])) * 1440 + (+startMtch[2]) * 60 + (+startMtch[3])
+    : 1380; // Fri 23:00
+  var closesRe = new RegExp("(\\d{1,2}):(\\d{2})\\s*(" + DAYS.join("|") + ")");
+
+  /* "HH:MM DAY" -> elapsed minutes from the start */
   function closesToMin(str) {
-    var mtch = /(\d{1,2}):(\d{2})\s*(FRI|SAT|SUN)/.exec(str || "");
+    var mtch = closesRe.exec(str || "");
     if (!mtch) return null;
-    var abs = (mtch[3] === "SUN" ? 2880 : mtch[3] === "SAT" ? 1440 : 0) + (+mtch[1]) * 60 + (+mtch[2]);
-    return abs - 1380; // Fri 23:00 sits 1380 min into Friday
+    return DAYS.indexOf(mtch[3]) * 1440 + (+mtch[1]) * 60 + (+mtch[2]) - START_MIN;
   }
 
   /* hard controls are the anchors: frac = closes / 24 h, rawEff = effort at km.
@@ -201,12 +210,12 @@
     return kmAtEffort(eff);
   }
   function pad2(n) { n = Math.round(n); return (n < 10 ? "0" : "") + n; }
-  /* elapsed minutes from Fri 23:00 -> "HH:MM DAY" clock time */
+  /* elapsed minutes from the start -> "HH:MM DAY" clock time */
   function fmtClock(elapsedMin) {
-    var abs = 1380 + Math.round(elapsedMin);
+    var abs = START_MIN + Math.round(elapsedMin);
     var day = Math.floor(abs / 1440);
     var mday = ((abs % 1440) + 1440) % 1440;
-    var lbl = day <= 0 ? "FRI" : day === 1 ? "SAT" : "SUN";
+    var lbl = DAYS[Math.max(0, Math.min(DAYS.length - 1, day))];
     return pad2(Math.floor(mday / 60)) + ":" + pad2(mday % 60) + " " + lbl;
   }
   function fmtDur(h) {
