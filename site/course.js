@@ -500,6 +500,20 @@
     return c;
   }
 
+  function buildHead(host, cols, isNum) {
+    var thead = document.createElement("thead");
+    var hr = document.createElement("tr");
+    for (var i = 0; i < cols.length; i++) {
+      var th = document.createElement("th");
+      th.scope = "col";
+      th.textContent = cols[i];
+      th.className = isNum(i) ? "num" : "left";
+      hr.appendChild(th);
+    }
+    thead.appendChild(hr);
+    host.appendChild(thead);
+  }
+
   function badge(cell, cls, text) {
     var b = document.createElement("span");
     b.className = "tier-badge " + cls;
@@ -511,21 +525,11 @@
   function renderTable() {
     if (!tableHost) return;
     tableHost.textContent = "";
-    var head = ["CTRL", "STATION", "DIST", "ALT", "LEG", "LEG D+", "LEG D−", "AID", "CLOSES", "SUPPORT"];
-    var thead = document.createElement("thead");
-    var hr = document.createElement("tr");
-    for (var i = 0; i < head.length; i++) {
-      var th = document.createElement("th");
-      th.scope = "col";
-      th.textContent = head[i];
-      th.className = (i >= 2 && i <= 6) ? "num" : "left";
-      hr.appendChild(th);
-    }
-    thead.appendChild(hr);
-    tableHost.appendChild(thead);
+    buildHead(tableHost, ["CTRL", "STATION", "DIST", "ALT", "LEG", "LEG D+", "LEG D−", "AID", "CLOSES", "SUPPORT"],
+      function (i) { return i >= 2 && i <= 6; });
 
     var tbody = document.createElement("tbody");
-    for (i = 0; i < C.stations.length; i++) {
+    for (var i = 0; i < C.stations.length; i++) {
       var s = C.stations[i];
       var tr = document.createElement("tr");
       if (s.hard) tr.className = "hard";
@@ -592,21 +596,11 @@
   function renderPlannerTable() {
     if (!plannerHost) return;
     plannerHost.textContent = "";
-    var head = ["CTRL", "STATION", "DIST", "ARRIVAL", "CLOSES", "BUFFER"];
-    var thead = document.createElement("thead");
-    var hr = document.createElement("tr");
-    for (var i = 0; i < head.length; i++) {
-      var th = document.createElement("th");
-      th.scope = "col";
-      th.textContent = head[i];
-      th.className = i >= 2 ? "num" : "left";
-      hr.appendChild(th);
-    }
-    thead.appendChild(hr);
-    plannerHost.appendChild(thead);
+    buildHead(plannerHost, ["CTRL", "STATION", "DIST", "ARRIVAL", "CLOSES", "BUFFER"],
+      function (i) { return i >= 2; });
 
     var tbody = document.createElement("tbody");
-    for (i = 0; i < C.stations.length; i++) {
+    for (var i = 0; i < C.stations.length; i++) {
       var s = C.stations[i];
       var plan = planFor(s);
       var tr = document.createElement("tr");
