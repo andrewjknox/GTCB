@@ -90,13 +90,22 @@
   var maxKm = track[track.length - 1][0];
   var Y_MIN = 200, Y_MAX = 1600; // metres, clean bounds around 257–1520
 
-  function nearestIdx(km) {
-    var lo = 0, hi = track.length - 1;
+  /* binary search over any ascending indexed sequence: [lo, hi] adjacent
+     indices spanning v — the one bracketing loop for track and cumEff alike */
+  function bracket(get, len, v) {
+    var lo = 0, hi = len - 1;
     while (hi - lo > 1) {
       var mid = (lo + hi) >> 1;
-      if (track[mid][0] < km) lo = mid; else hi = mid;
+      if (get(mid) < v) lo = mid; else hi = mid;
     }
-    return (km - track[lo][0] < track[hi][0] - km) ? lo : hi;
+    return [lo, hi];
+  }
+  function trackKmAt(i) { return track[i][0]; }
+  function cumEffAt(i) { return cumEff[i]; }
+
+  function nearestIdx(km) {
+    var b = bracket(trackKmAt, track.length, km);
+    return (km - track[b[0]][0] < track[b[1]][0] - km) ? b[0] : b[1];
   }
 
   /* ---------- pace / cut-off planner model ---------- */
@@ -132,8 +141,7 @@
   function interpTrack(km, col) {
     if (km <= track[0][0]) return col ? track[0][1] : 0;
     if (km >= maxKm) return col ? track[track.length - 1][1] : totalEff;
-    var lo = 0, hi = track.length - 1;
-    while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (track[mid][0] < km) lo = mid; else hi = mid; }
+    var b = bracket(trackKmAt, track.length, km), lo = b[0], hi = b[1];
     var span = track[hi][0] - track[lo][0];
     var t = span > 0 ? (km - track[lo][0]) / span : 0;
     if (col) return track[lo][1] + t * (track[hi][1] - track[lo][1]);
@@ -145,8 +153,7 @@
   function kmAtEffort(e) {
     if (e <= 0) return track[0][0];
     if (e >= totalEff) return maxKm;
-    var lo = 0, hi = cumEff.length - 1;
-    while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (cumEff[mid] < e) lo = mid; else hi = mid; }
+    var b = bracket(cumEffAt, cumEff.length, e), lo = b[0], hi = b[1];
     var span = cumEff[hi] - cumEff[lo];
     var t = span > 0 ? (e - cumEff[lo]) / span : 0;
     return track[lo][0] + t * (track[hi][0] - track[lo][0]);
