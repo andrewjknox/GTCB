@@ -677,7 +677,6 @@
   var targetOut = document.getElementById("target-readout");
   var raceOut = document.getElementById("raceclock-readout");
   var plannerHost = document.getElementById("planner-table");
-  var cutoffBtn = document.getElementById("cutoff-preset");
 
   /* the sliders are the single source of truth for the planner state —
      except in predicted mode, where the model's finish time takes over and
@@ -787,14 +786,6 @@
     if (predNote) predNote.hidden = !on;
   }
 
-  if (cutoffBtn && targetSlider) {
-    cutoffBtn.addEventListener("click", function () {
-      setPred(false); // cut-off pace is a manual target — release predicted mode
-      targetSlider.value = "24";
-      renderPlanner();
-      updateYou();
-    });
-  }
   if (predBtn) {
     predBtn.addEventListener("click", function () {
       setPred(!predOn());
