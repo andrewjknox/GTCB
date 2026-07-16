@@ -230,12 +230,15 @@
     if (M === 60) { H++; M = 0; }
     return H + ":" + pad2(M);
   }
+  /* both round to whole minutes first so sign and colour always agree */
   function fmtBuf(min) {
-    var s = min < -0.5 ? "−" : "+", a = Math.abs(Math.round(min));
+    min = Math.round(min);
+    var s = min < 0 ? "−" : "+", a = Math.abs(min);
     if (a >= 60) return s + Math.floor(a / 60) + "h" + pad2(a % 60);
     return s + a + "m";
   }
   function bufClass(min) {
+    min = Math.round(min);
     if (min < 0) return "buf-neg";
     if (min < 15) return "buf-bad";
     if (min < 60) return "buf-tight";
@@ -250,7 +253,7 @@
     return {
       arrive: fmtClock(arriveMin),
       closeMin: closeMin,
-      bufMin: closeMin === null ? null : closeMin - arriveMin,
+      bufMin: closeMin === null ? null : Math.round(closeMin - arriveMin),
     };
   }
 
