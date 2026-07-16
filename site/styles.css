@@ -437,6 +437,59 @@ tr.current td { color: #FFFFFF; font-weight: bold; }
   background: #65DBEF;
 }
 
+/* nav group — top-level item with a dropdown of sub-pages */
+.nav-group { position: relative; }
+
+.nav-group-btn {
+  display: block;
+  padding: 7px 18px;
+  background: #000000;
+  border: 0;
+  border-right: 1px solid #5955E0;
+  color: #8076F1;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.nav-group-btn:hover,
+.nav-group-btn:focus,
+.nav-group.open .nav-group-btn {
+  color: #FFFFFF;
+  background: #5955E0;
+  outline: none;
+}
+
+/* a child of this group is the current page */
+.nav-group-btn.has-current { color: #65DBEF; }
+
+.nav-caret { display: inline-block; }
+.nav-group.open .nav-caret { transform: rotate(180deg); }
+
+.nav-sub {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -2px;
+  min-width: calc(100% + 2px);
+  background: #000000;
+  border: 2px solid #5955E0;
+  z-index: 40;
+}
+
+.nav-group.open .nav-sub { display: block; }
+
+.site-nav .nav-sub a {
+  border-right: 0;
+  border-bottom: 1px solid #5955E0;
+  white-space: nowrap;
+}
+
+.site-nav .nav-sub a:last-child { border-bottom: 0; }
+
 /* metric/imperial toggle — sits at the right end of the nav bar */
 .unit-toggle {
   display: block;
@@ -526,6 +579,27 @@ tr.current td { color: #FFFFFF; font-weight: bold; }
   }
 
   .site-nav a:last-child { border-bottom: 0; }
+
+  /* nav group flattens into the burger column; sub-links indent */
+  .nav-group-btn {
+    width: 100%;
+    text-align: left;
+    border-right: 0;
+    border-bottom: 1px solid #5955E0;
+  }
+
+  .nav-sub {
+    position: static;
+    min-width: 0;
+    border: 0;
+  }
+
+  .site-nav .nav-sub a {
+    padding-left: 38px;
+    border-bottom: 1px solid #5955E0;
+  }
+
+  .site-nav .nav-sub a:last-child { border-bottom: 1px solid #5955E0; }
 
   /* the last nav link's border-bottom already separates it from the toggle */
   .unit-toggle {

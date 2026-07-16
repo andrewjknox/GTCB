@@ -6,11 +6,16 @@
   "use strict";
 
   /* ---------- render ---------- */
+  /* Entries are either ["href", "Label"] or a group: ["Label", [entries]].
+     Groups render as a dropdown on desktop and an expandable section in
+     the burger menu. */
   var PAGES = [
     ["index.html", "Dashboard"],
-    ["plan.html", "The Plan"],
-    ["strength.html", "Strength"],
-    ["venues.html", "Venues"],
+    ["Training Plan", [
+      ["plan.html", "The Plan"],
+      ["strength.html", "Strength"],
+      ["venues.html", "Locations"]
+    ]],
     ["course.html", "Course"],
     ["regs.html", "102K Regs"],
     ["conditions.html", "Entry Conditions"]
@@ -20,6 +25,13 @@
   if (nav) {
     // Last path segment; a directory URL ("…/gtcb/") means the index page.
     var here = location.pathname.split("/").pop() || "index.html";
+
+    var renderLink = function (page) {
+      return '<a href="' + page[0] + '"' +
+        (page[0] === here ? ' aria-current="page"' : "") +
+        ">" + page[1] + "</a>";
+    };
+
     var parts = [
       '<button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation menu">',
       '<span class="burger-box" aria-hidden="true">',
@@ -28,11 +40,24 @@
       '<div id="nav-links" class="nav-links">'
     ];
     for (var p = 0; p < PAGES.length; p++) {
-      parts.push(
-        '<a href="' + PAGES[p][0] + '"' +
-        (PAGES[p][0] === here ? ' aria-current="page"' : "") +
-        ">" + PAGES[p][1] + "</a>"
-      );
+      if (Array.isArray(PAGES[p][1])) {
+        var children = PAGES[p][1];
+        var hasCurrent = false;
+        for (var c = 0; c < children.length; c++) {
+          if (children[c][0] === here) { hasCurrent = true; break; }
+        }
+        parts.push(
+          '<div class="nav-group">',
+          '<button class="nav-group-btn' + (hasCurrent ? " has-current" : "") +
+          '" type="button" aria-expanded="false">' + PAGES[p][0] +
+          ' <span class="nav-caret" aria-hidden="true">▾</span></button>',
+          '<div class="nav-sub">'
+        );
+        for (c = 0; c < children.length; c++) parts.push(renderLink(children[c]));
+        parts.push("</div>", "</div>");
+      } else {
+        parts.push(renderLink(PAGES[p]));
+      }
     }
     parts.push(
       '<button id="unit-toggle" class="unit-toggle" type="button" aria-pressed="false" aria-label="Switch between metric and imperial units">UNITS: KM·M</button>',
@@ -40,6 +65,36 @@
     );
     nav.innerHTML = parts.join("");
   }
+
+  /* ---------- nav groups (sub-nav dropdowns) ---------- */
+  var groupBtns = document.querySelectorAll(".nav-group-btn");
+
+  function closeGroups(except) {
+    for (var g = 0; g < groupBtns.length; g++) {
+      if (groupBtns[g] === except) continue;
+      groupBtns[g].setAttribute("aria-expanded", "false");
+      groupBtns[g].parentNode.classList.remove("open");
+    }
+  }
+
+  for (var gb = 0; gb < groupBtns.length; gb++) {
+    groupBtns[gb].addEventListener("click", function () {
+      var open = this.getAttribute("aria-expanded") !== "true";
+      closeGroups(this);
+      this.setAttribute("aria-expanded", open ? "true" : "false");
+      this.parentNode.classList.toggle("open", open);
+    });
+  }
+
+  // A click anywhere outside a group closes any open dropdown.
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    while (t && t.nodeType === 1) {
+      if (t.classList.contains("nav-group")) return;
+      t = t.parentNode;
+    }
+    closeGroups(null);
+  });
 
   /* ---------- burger ---------- */
   var btn = document.querySelector(".nav-burger");
@@ -49,6 +104,7 @@
     var setOpen = function (open) {
       btn.setAttribute("aria-expanded", open ? "true" : "false");
       links.classList.toggle("open", open);
+      if (!open) closeGroups(null);
     };
 
     btn.addEventListener("click", function () {
@@ -66,9 +122,12 @@
 
     // Escape closes the menu and returns focus to the button.
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && btn.getAttribute("aria-expanded") === "true") {
-        setOpen(false);
-        btn.focus();
+      if (e.key === "Escape") {
+        closeGroups(null);
+        if (btn.getAttribute("aria-expanded") === "true") {
+          setOpen(false);
+          btn.focus();
+        }
       }
     });
   }
