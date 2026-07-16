@@ -114,9 +114,7 @@
      reproduces the organiser's schedule exactly; any other finish time just
      scales the same normalised curve. */
 
-  var planTargetH = 22;   // chosen finish time, hours (16–24)
-  var planRaceMin = 0;    // race-clock elapsed minutes from Fri 23:00
-  var chartAPI = null;    // { setYou } — rebound on every renderChart
+  var chartAPI = null;    // { setYou, refreshLabels } — rebound on every renderChart
 
   var cumEff = [0];
   (function () {
@@ -248,7 +246,7 @@
   /* arrival + buffer for a station at the current target pace — the single
      source both the tooltip and the planner table render from */
   function planFor(s) {
-    var arriveMin = fracAtKm(s.x_km) * planTargetH * 60;
+    var arriveMin = fracAtKm(s.x_km) * targetH() * 60;
     var closeMin = s.hard && s.closes && s.n !== "S" ? closesToMin(s.closes) : null;
     return {
       arrive: fmtClock(arriveMin),
@@ -276,7 +274,7 @@
     if (s.closes) lines.push({ text: "Closes " + s.closes });
     /* pace-planner arrival at the chosen finish time */
     var plan = planFor(s);
-    lines.push({ text: "Arrive ~" + plan.arrive + " (" + fmtDur(planTargetH) + " pace)" });
+    lines.push({ text: "Arrive ~" + plan.arrive + " (" + fmtDur(targetH()) + " pace)" });
     if (plan.bufMin !== null) lines.push({ text: "Buffer " + fmtBuf(plan.bufMin) });
     var sup = [];
     if (s.crew) sup.push("crew");
@@ -560,10 +558,14 @@
   var plannerHost = document.getElementById("planner-table");
   var cutoffBtn = document.getElementById("cutoff-preset");
 
+  /* the sliders are the single source of truth for the planner state */
+  function targetH() { return (targetSlider && parseFloat(targetSlider.value)) || 22; }
+  function raceMin() { return raceSlider ? parseFloat(raceSlider.value) || 0 : 0; }
+  function raceFrac() { return (raceMin() / 60) / targetH(); }
+
   function updateYou() {
     if (!chartAPI) return;
-    var frac = planTargetH > 0 ? (planRaceMin / 60) / planTargetH : 0;
-    chartAPI.setYou(kmAtFrac(frac));
+    chartAPI.setYou(kmAtFrac(raceFrac()));
   }
 
   function outSpan(parent, cls, text) {
@@ -576,15 +578,14 @@
   function renderReadouts() {
     if (targetOut) {
       targetOut.textContent = "";
-      outSpan(targetOut, null, "TARGET " + fmtDur(planTargetH) + " ");
-      outSpan(targetOut, "finish", "→ FINISH " + fmtClock(planTargetH * 60));
+      outSpan(targetOut, null, "TARGET " + fmtDur(targetH()) + " ");
+      outSpan(targetOut, "finish", "→ FINISH " + fmtClock(targetH() * 60));
     }
     if (raceOut) {
       raceOut.textContent = "";
-      var frac = planTargetH > 0 ? (planRaceMin / 60) / planTargetH : 0;
-      var pinned = planRaceMin > planTargetH * 60 + 1e-6;
-      outSpan(raceOut, null, fmtClock(planRaceMin) + " ");
-      outSpan(raceOut, "finish", "@ " + fmtDist(kmAtFrac(frac)) + (pinned ? " (FIN)" : ""));
+      var pinned = raceMin() > targetH() * 60;
+      outSpan(raceOut, null, fmtClock(raceMin()) + " ");
+      outSpan(raceOut, "finish", "@ " + fmtDist(kmAtFrac(raceFrac())) + (pinned ? " (FIN)" : ""));
     }
   }
 
@@ -633,17 +634,13 @@
   }
 
   if (targetSlider) {
-    planTargetH = parseFloat(targetSlider.value) || planTargetH;
     targetSlider.addEventListener("input", function () {
-      planTargetH = parseFloat(targetSlider.value);
       renderPlanner();
       updateYou();
     });
   }
   if (raceSlider) {
-    planRaceMin = parseFloat(raceSlider.value) || planRaceMin;
     raceSlider.addEventListener("input", function () {
-      planRaceMin = parseFloat(raceSlider.value);
       renderReadouts();
       updateYou();
     });
@@ -651,7 +648,6 @@
   if (cutoffBtn && targetSlider) {
     cutoffBtn.addEventListener("click", function () {
       targetSlider.value = "24";
-      planTargetH = 24;
       renderPlanner();
       updateYou();
     });
