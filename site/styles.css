@@ -1222,6 +1222,200 @@ tr.current-week td:first-child {
   margin-top: 10px;
 }
 
+/* ---------- weekly debrief (plan page — debrief.js) ---------- */
+
+/* week-number cell button, shown only for weeks with a generated report;
+   first column so it stays visible however far the table is scrolled */
+.wk-report-btn {
+  font: inherit;
+  letter-spacing: inherit;
+  background: transparent;
+  color: #3EB849;
+  border: 1px solid #3AA241;
+  padding: 3px 7px;
+  min-width: 34px;
+  min-height: 28px;
+  cursor: pointer;
+}
+
+.wk-report-btn:hover,
+.wk-report-btn:focus {
+  background: #3EB849;
+  color: #000000;
+  outline: none;
+}
+
+.wk-report-mark { margin-left: 4px; }
+
+.debrief-lock { overflow: hidden; }
+
+.debrief-backdrop[hidden] { display: none; }
+
+.debrief-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.debrief {
+  background: #000000;
+  border: 4px double #3EB849;
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.debrief-head {
+  position: sticky;
+  top: 0;
+  background: #000000;
+  border-bottom: 2px solid #3AA241;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.debrief-title {
+  color: #3EB849;
+  font-size: 15px;
+  letter-spacing: 0.18em;
+}
+
+.debrief-close {
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  background: transparent;
+  color: #CCCCCC;
+  border: 1px solid #CCCCCC;
+  min-width: 44px;
+  min-height: 32px;
+  cursor: pointer;
+}
+
+.debrief-close:hover,
+.debrief-close:focus {
+  background: #CCCCCC;
+  color: #000000;
+  outline: none;
+}
+
+.debrief-body { padding: 12px 14px 14px; }
+
+.debrief-sub {
+  color: #8076F1;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  margin-bottom: 10px;
+}
+
+.debrief-verdict {
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+}
+
+.debrief-verdict.ok { color: #3EB849; }
+.debrief-verdict.bad { color: #FF897D; }
+.debrief-verdict.deload-ok { color: #65DBEF; }
+
+.debrief-stats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  margin-bottom: 14px;
+}
+
+.debrief-stats dt { color: #5955E0; font-weight: bold; }
+.debrief-stats dd { color: #CCCCCC; }
+
+.debrief-days {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.debrief-day { flex: 1 1 0; min-width: 0; }
+
+.debrief-bar-box {
+  height: 64px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.debrief-bar { width: 100%; background: #5955E0; }
+.debrief-bar.zero { background: #3AA241; }
+
+.debrief-day-label {
+  text-align: center;
+  color: #8076F1;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+.debrief-h {
+  color: #CCC35E;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  margin-bottom: 6px;
+}
+
+.debrief-campaign {
+  border-top: 1px solid #5955E0;
+  padding-top: 10px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+.debrief-campaign p { margin-bottom: 2px; }
+
+.debrief-notes {
+  border: 1px solid #CCC35E;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  color: #DED087;
+}
+
+.debrief-headline { font-weight: bold; margin-bottom: 8px; }
+
+.debrief-notes p { margin-bottom: 8px; }
+.debrief-notes p:last-child { margin-bottom: 0; }
+
+.debrief-flags { color: #FF897D; margin-bottom: 14px; }
+.debrief-flags .debrief-h { color: #FF897D; }
+.debrief-flags p { margin-bottom: 4px; }
+
+.debrief-footer {
+  color: #8076F1;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+/* mobile: full-screen sheet — the table scrolls sideways, the debrief must not */
+@media (max-width: 640px) {
+  .debrief-backdrop { padding: 0; }
+  .debrief {
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    border: none;
+    border-top: 4px double #3EB849;
+  }
+  .debrief-head { padding: 12px 14px; }
+  .debrief-close { min-height: 44px; }
+}
+
 /* ---------- footer ---------- */
 
 footer {
