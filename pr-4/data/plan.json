@@ -1,0 +1,30 @@
+{
+  "race": { "name": "Gran Trail Costa Blanca 102K", "date": "2026-11-13", "distance_km": 102, "vert_m": 6280 },
+  "timezone": "Europe/London",
+  "week1_start": "2026-06-08",
+  "weeks": [
+    { "week": 1,  "iso_week": "2026-W24", "start": "2026-06-08", "phase": "Base",  "vert_target_m": 1000, "tof_target_h": 5, "focus": "Baseline: easy vert hikes + downhill reps; build the bike/row engine" },
+    { "week": 2,  "iso_week": "2026-W25", "start": "2026-06-15", "phase": "Base",  "vert_target_m": 1400, "tof_target_h": 6, "focus": "Extend hike duration; steady engine volume" },
+    { "week": 3,  "iso_week": "2026-W26", "start": "2026-06-22", "phase": "Base",  "vert_target_m": 1800, "tof_target_h": 7, "focus": "Longest hike yet + downhill volume" },
+    { "week": 4,  "iso_week": "2026-W27", "start": "2026-06-29", "phase": "Base",  "vert_target_m": 900,  "tof_target_h": 4, "notes": "recovery", "focus": "Deload — absorb the work, easy week" },
+    { "week": 5,  "iso_week": "2026-W28", "start": "2026-07-06", "phase": "Base",  "vert_target_m": 1800, "tof_target_h": 7, "focus": "Steeper vert; downhill eccentric focus" },
+    { "week": 6,  "iso_week": "2026-W29", "start": "2026-07-13", "phase": "Base",  "vert_target_m": 2200, "tof_target_h": 8, "focus": "Long mountain day" },
+    { "week": 7,  "iso_week": "2026-W30", "start": "2026-07-20", "phase": "Base",  "vert_target_m": 2600, "tof_target_h": 9, "focus": "Block peak; first back-to-back (hike Sat / descent Sun)" },
+    { "week": 8,  "iso_week": "2026-W31", "start": "2026-07-27", "phase": "Base",  "vert_target_m": 1200, "tof_target_h": 5, "notes": "recovery", "focus": "Deload + Effer check on run reintro" },
+    { "week": 9,  "iso_week": "2026-W32", "start": "2026-08-03", "phase": "Build", "vert_target_m": 2000, "tof_target_h": 8, "focus": "Run reintro (flat → gentle up) if cleared; keep hiking the vert" },
+    { "week": 10, "iso_week": "2026-W33", "start": "2026-08-10", "phase": "Build", "vert_target_m": 2400, "tof_target_h": 9, "focus": "Blend run/hike; proper B2B weekend" },
+    { "week": 11, "iso_week": "2026-W34", "start": "2026-08-17", "phase": "Build", "vert_target_m": 2800, "tof_target_h": 10, "focus": "Ramp vert; longer B2B" },
+    { "week": 12, "iso_week": "2026-W35", "start": "2026-08-24", "phase": "Build", "vert_target_m": 1400, "tof_target_h": 5, "notes": "recovery", "focus": "Deload" },
+    { "week": 13, "iso_week": "2026-W36", "start": "2026-08-31", "phase": "Build", "vert_target_m": 2800, "tof_target_h": 10, "focus": "Night-running practice begins; fuelling rehearsal" },
+    { "week": 14, "iso_week": "2026-W37", "start": "2026-09-07", "phase": "Build", "vert_target_m": 3200, "tof_target_h": 11, "focus": "Big B2B; course recon seg 1 (Costa Blanca)" },
+    { "week": 15, "iso_week": "2026-W38", "start": "2026-09-14", "phase": "Build", "vert_target_m": 3600, "tof_target_h": 12, "focus": "Biggest vert yet; recon the high mid-course" },
+    { "week": 16, "iso_week": "2026-W39", "start": "2026-09-21", "phase": "Build", "vert_target_m": 1800, "tof_target_h": 6, "notes": "recovery", "focus": "Deload" },
+    { "week": 17, "iso_week": "2026-W40", "start": "2026-09-28", "phase": "Peak",  "vert_target_m": 4000, "tof_target_h": 13, "focus": "Peak vert; long night B2B" },
+    { "week": 18, "iso_week": "2026-W41", "start": "2026-10-05", "phase": "Peak",  "vert_target_m": 4200, "tof_target_h": 14, "focus": "Peak ToF; full dress rehearsal (kit / nutrition / night)" },
+    { "week": 19, "iso_week": "2026-W42", "start": "2026-10-12", "phase": "Peak",  "vert_target_m": 3000, "tof_target_h": 10, "focus": "Last big week; taper starts to bite" },
+    { "week": 20, "iso_week": "2026-W43", "start": "2026-10-19", "phase": "Taper", "vert_target_m": 1800, "tof_target_h": 6, "notes": "recovery", "focus": "Cut volume, keep sharpness & intensity touches" },
+    { "week": 21, "iso_week": "2026-W44", "start": "2026-10-26", "phase": "Taper", "vert_target_m": 1200, "tof_target_h": 4, "focus": "Legs springy; short, snappy" },
+    { "week": 22, "iso_week": "2026-W45", "start": "2026-11-02", "phase": "Taper", "vert_target_m": 700,  "tof_target_h": 3, "focus": "Race-week-minus; easy + mobility, lots of sleep" },
+    { "week": 23, "iso_week": "2026-W46", "start": "2026-11-09", "phase": "Race",  "vert_target_m": 500,  "notes": "pre-race only; GTCB 102K Fri 2026-11-13", "focus": "RACE: Fri 13 Nov, 23:00 — travel, short shakeout, Friday-afternoon nap, fuel" }
+  ]
+}
