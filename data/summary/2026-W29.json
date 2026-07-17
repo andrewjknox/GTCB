@@ -2,23 +2,73 @@
   "iso_week": "2026-W29",
   "training_week": 6,
   "phase": "Base",
-  "generated_at": "2026-07-15T15:00:00Z",
-  "window": { "start": "2026-07-13T00:00:00", "end": "2026-07-19T23:59:59", "tz": "Europe/London" },
-  "days_elapsed": 3,
-  "vert": { "actual_m": 827, "target_m": 2200, "prorated_target_m": 943, "pct_of_target": 38, "pct_of_prorated": 88 },
-  "time_on_feet": { "actual_s": 10491 },
-  "distance": { "actual_m": 22973 },
-  "sessions": { "count": 4, "on_foot_count": 2 },
+  "generated_at": "2026-07-17T09:23:50Z",
+  "window": {
+    "start": "2026-07-13T00:00:00",
+    "end": "2026-07-19T23:59:59",
+    "tz": "Europe/London"
+  },
+  "days_elapsed": 5,
+  "vert": {
+    "actual_m": 1523,
+    "target_m": 2200,
+    "prorated_target_m": 1571,
+    "pct_of_target": 69,
+    "pct_of_prorated": 97
+  },
+  "time_on_feet": {
+    "actual_s": 17995
+  },
+  "distance": {
+    "actual_m": 33756
+  },
+  "sessions": {
+    "count": 6,
+    "on_foot_count": 3
+  },
   "daily": [
-    { "date": "2026-07-13", "vert_m": 24, "time_s": 2233, "distance_m": 5866 },
-    { "date": "2026-07-14", "vert_m": 0, "time_s": 0, "distance_m": 0 },
-    { "date": "2026-07-15", "vert_m": 803, "time_s": 8258, "distance_m": 17107 },
-    { "date": "2026-07-16", "vert_m": 0, "time_s": 0, "distance_m": 0 },
-    { "date": "2026-07-17", "vert_m": 0, "time_s": 0, "distance_m": 0 },
-    { "date": "2026-07-18", "vert_m": 0, "time_s": 0, "distance_m": 0 },
-    { "date": "2026-07-19", "vert_m": 0, "time_s": 0, "distance_m": 0 }
+    {
+      "date": "2026-07-13",
+      "vert_m": 24,
+      "time_s": 2233,
+      "distance_m": 5866
+    },
+    {
+      "date": "2026-07-14",
+      "vert_m": 0,
+      "time_s": 0,
+      "distance_m": 0
+    },
+    {
+      "date": "2026-07-15",
+      "vert_m": 803,
+      "time_s": 8258,
+      "distance_m": 17107
+    },
+    {
+      "date": "2026-07-16",
+      "vert_m": 0,
+      "time_s": 0,
+      "distance_m": 0
+    },
+    {
+      "date": "2026-07-17",
+      "vert_m": 696,
+      "time_s": 7504,
+      "distance_m": 10783
+    },
+    {
+      "date": "2026-07-18",
+      "vert_m": 0,
+      "time_s": 0,
+      "distance_m": 0
+    },
+    {
+      "date": "2026-07-19",
+      "vert_m": 0,
+      "time_s": 0,
+      "distance_m": 0
+    }
   ],
-  "flags": [
-    { "type": "anomaly", "detail": "Activity 19292527575 'Morning Walk' (2026-07-13, 3797m, 10m gain) is labelled Walk and excluded from on-foot totals; would add 10m vert / 2575s / 3797m if relabelled Hike or Run." }
-  ]
+  "flags": []
 }

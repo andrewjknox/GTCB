@@ -6,8 +6,30 @@
     "end": "2026-07-19T23:59:59",
     "tz": "Europe/London"
   },
-  "fetched_at": "2026-07-15T14:25:00Z",
+  "fetched_at": "2026-07-17T14:00:00Z",
   "activities": [
+    {
+      "id": 19346122254,
+      "name": "Hiking Reps",
+      "sport_type": "Hike",
+      "start_date_local": "2026-07-17T05:52:14",
+      "distance_m": 10783,
+      "moving_time_s": 7504,
+      "elapsed_time_s": 7987,
+      "elevation_gain_m": 696,
+      "description": "⛰️ Mellor Moor (1,075 ft) | 🌐 summitbag.com"
+    },
+    {
+      "id": 19333915131,
+      "name": "Morning Weight Training",
+      "sport_type": "WeightTraining",
+      "start_date_local": "2026-07-16T09:54:51",
+      "distance_m": 0,
+      "moving_time_s": 2451,
+      "elapsed_time_s": 2451,
+      "elevation_gain_m": 0,
+      "description": null
+    },
     {
       "id": 19318900700,
       "name": "Morning Trail Run 🌄",
