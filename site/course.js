@@ -336,6 +336,16 @@
       cum[k] = tMin;
     }
 
+    /* snap the finish to the target slider's 15-min grid, scaling the whole
+       arrival curve with it so station arrivals stay consistent with the
+       displayed finish */
+    var snapMin = Math.round(tMin / 15) * 15;
+    if (tMin > 0 && snapMin > 0 && snapMin !== tMin) {
+      var snapScale = snapMin / tMin;
+      for (k = 1; k < cum.length; k++) cum[k] *= snapScale;
+      tMin = snapMin;
+    }
+
     PRED = { cum: cum, finH: tMin / 60 };
     predBtn.hidden = false;
     predBtn.textContent = "PREDICTED (" + fmtDur(PRED.finH) + ")";
