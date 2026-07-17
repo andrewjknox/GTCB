@@ -53,6 +53,16 @@ try {
   for (const w of weeks) {
     copyFileSync(`data/summary/${w}.json`, `site/data/summary/${w}.json`);
   }
+  // Weekly debrief reports ride along when present (generated on demand by
+  // scripts/report.mjs — see CLAUDE.md) so Gate C fidelity + data.js stay true.
+  if (existsSync("data/reports/index.json")) {
+    mkdirSync("site/data/reports", { recursive: true });
+    copyFileSync("data/reports/index.json", "site/data/reports/index.json");
+    const reports = JSON.parse(readFileSync("data/reports/index.json", "utf8")).weeks ?? [];
+    for (const w of reports) {
+      copyFileSync(`data/reports/${w}.json`, `site/data/reports/${w}.json`);
+    }
+  }
 } catch (e) {
   console.error(`refresh: BLOCKED at copy — ${e.message}`);
   process.exit(2);

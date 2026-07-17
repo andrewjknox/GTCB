@@ -122,6 +122,18 @@ if (!existsSync(SITE_DIR)) {
   for (const w of indexWeeks) {
     pairs.push([`data/summary/${w}.json`, `site/data/summary/${w}.json`]);
   }
+  // weekly debrief reports (optional — present only once generated on demand)
+  if (existsSync("data/reports/index.json")) {
+    pairs.push(["data/reports/index.json", "site/data/reports/index.json"]);
+    try {
+      const reportWeeks = JSON.parse(readFileSync("data/reports/index.json", "utf8")).weeks ?? [];
+      for (const w of reportWeeks) {
+        pairs.push([`data/reports/${w}.json`, `site/data/reports/${w}.json`]);
+      }
+    } catch (e) {
+      errs.push(`cannot read data/reports/index.json: ${e.message}`);
+    }
+  }
   for (const [src, copy] of pairs) {
     if (!existsSync(src)) { errs.push(`${src} missing`); continue; }
     if (!existsSync(copy)) { errs.push(`${copy} missing`); continue; }
