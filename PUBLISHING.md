@@ -24,6 +24,15 @@ enforced by Gate C), so the site is happy at any subpath. Note the path is
 **case-sensitive**: the repo was renamed to lowercase `gtcb` on 2026-07-09,
 so `/GTCB/` no longer resolves.
 
+### PR previews
+
+Every open PR that touches `site/` or `data/` gets a live snapshot at
+`https://andrewjknox.github.io/gtcb/previews/pr-<N>/` (a sticky PR comment
+carries the link). Mechanics: `pr-preview.yml` keeps a `pr-<N>/` folder per PR
+on the orphan `previews` branch, and `pages.yml` folds that branch into the
+production deploy under `previews/` — production always builds from `main` and
+is unaffected. Previews are cleaned up when the PR closes.
+
 ## 2. Custom domain: knoxy.com/gtcb (later decision)
 
 Current DNS: `knoxy.com` → Azure (`51.104.28.72`), so nothing needs to happen now.

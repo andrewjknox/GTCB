@@ -8,7 +8,7 @@ You are the scaffold agent for the GTCB dashboard pipeline (repo root: `E:\Proje
 ## Context you need
 
 - Project: static dashboard (HTML/JS/Canvas + JSON, no framework) tracking a 23-week ultra build to Gran Trail Costa Blanca 102K / 6,280m on Fri 2026-11-13. Weekly on-foot vertical gain vs plan is the primary metric.
-- Week numbering: training W1 = Mon 2026-06-08 (= ISO 2026-W24); W23 = race week (Mon 2026-11-09). Phases: Base W1–8, Build W9–16, Peak W17–20, Taper W21–22, Race W23. All dates Europe/London; week = Mon 00:00 → Sun 23:59:59. Data files are named by ISO week (`2026-W28.json`).
+- Week numbering: training W1 = Mon 2026-06-08 (= ISO 2026-W24); W23 = race week (Mon 2026-11-09). Phases: Base W1–8, Build W9–16, Peak W17–19, Taper W20–22, Race W23 (W20 relabelled Peak → Taper 2026-07-09, DECISIONS.md #13). All dates Europe/London; week = Mon 00:00 → Sun 23:59:59. Data files are named by ISO week (`2026-W28.json`).
 - Pipeline: data-agent → Gate A → analyst-agent → Gate B → builder-agent → Gate C → reviewer-agent → Gate D → publish. Gates are deterministic scripts (Node.js — python and jq are unavailable on this machine).
 
 ## Files to create
@@ -46,7 +46,7 @@ Project memory for all agents. Must contain these sections:
 | gray | #CCCCCC |
 | white | #FFFFFF |
 
-**Week numbering & race context** (as in Context above), including: on-foot sport types = Run, TrailRun, VirtualRun, Walk, Hike; left-calf rehab is active — activity descriptions mentioning calf issues must be surfaced as flags.
+**Week numbering & race context** (as in Context above), including: on-foot sport types = Run, TrailRun, VirtualRun, Hike (Walk excluded — owner decision 2026-07-13); left-calf rehab is active — activity descriptions mentioning calf issues must be surfaced as flags.
 
 **Data shapes** — document these JSON shapes:
 
@@ -158,7 +158,7 @@ exit 0
 
 ### 5. `data/plan.json`
 
-Hand-maintained plan (placeholder targets — owner will tune; keep this exact data):
+Hand-maintained plan (placeholder targets — owner will tune; keep this exact data). *(Since superseded: the owner hand-tuned all targets and added `tof_target_h` + `focus` fields — the live file is the truth.)*
 ```json
 {
   "race": { "name": "Gran Trail Costa Blanca 102K", "date": "2026-11-13", "distance_km": 102, "vert_m": 6280 },

@@ -14,6 +14,8 @@ Implement Gate C: `scripts/gates/gate-c.mjs` + rewrite stub `.claude/hooks/gate-
 
 Print one line per check. Test each check in a sandbox with a deliberate violation. Do not modify anything under `site/` or `data/` — the builder-agent owns those.
 
+*(Added later: Gate C gained **check 8** — `site/app.min.js` present, non-empty, smaller than `app.js`, and `index.html` loads it instead of the unminified file; see CLAUDE.md invariants 3b/3c.)*
+
 ## Prompt B → builder-agent (claude-fable-5): build the dashboard
 
 You are builder-agent (charter: `.claude/agents/builder-agent.md`). Read CLAUDE.md fully (invariants, palette, data shapes), then `data/plan.json`, `data/summary/index.json` and all summary files. Build the static dashboard in `site/`:

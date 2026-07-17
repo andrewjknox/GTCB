@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// Build step — inlines data/plan.json + data/summary/* into site/data.js so the
-// dashboard renders from file:// where fetch() of relative URLs is unavailable.
+// Build step — inlines data/plan.json + data/summary/* + data/reports/* +
+// data/refs/pace-model.json into site/data.js so the dashboard renders from
+// file:// where fetch() of relative URLs is unavailable.
 // Same dependency-free pattern as minify.mjs. index.html loads data.js before
 // app.min.js; app.js prefers fetch when served over http(s) so the inline copy
 // can never shadow fresh JSON. Exit 0 = built, 2 = failed.

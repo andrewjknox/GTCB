@@ -15,6 +15,8 @@ The reviewer-agent is read-only (Read/Grep/Glob — no Write), so it returns the
 ```
 `verdict` must be "block" iff any check failed; `checks` must cover every invariant 1–7 incl. 3a.
 
+> **Id set is closed (note added 2026-07-17):** exactly the 8 ids `1, 2, 3, 3a, 4, 5, 6, 7` — Gate D rejects any other. Invariants 3b/3c were added to CLAUDE.md later (minified JS, inline data) and are enforced deterministically by Gate C check-8; the reviewer folds any such observations into invariant 3's detail (see DECISIONS.md #11).
+
 ## Prompt A → gate-smith (general-purpose, sonnet): implement Gate D
 
 - `scripts/gates/gate-d.mjs`: read the NEWEST (by mtime) `data/review/*.json`; exit 2 if none exist, it doesn't parse, `verdict` ∉ {pass, block}, `checks` doesn't cover all 8 invariant ids with result pass|fail, `verdict` is inconsistent with the checks (block iff ≥1 fail), `reasons` is non-empty on pass or empty on block, or verdict is "block" (print each reason). Exit 0 only on a well-formed pass.

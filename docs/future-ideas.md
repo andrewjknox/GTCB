@@ -5,7 +5,14 @@ pipeline; pick up when there's appetite.
 
 ---
 
-## 1. Pace / cut-off planner on the course profile ★ top pick
+## 1. Pace / cut-off planner on the course profile ★ top pick — ✅ SHIPPED
+
+**Built 2026-07-15/16, merged to main in PR #2.** Lives on `site/course.html` as
+the PACE PLANNER: finish-time slider with per-control arrival clocks and cut-off
+buffers, plus a **PREDICTED** mode that models arrivals from the 2022 CB Trails
+46K pace-vs-grade curve scaled by current training readiness — see
+`docs/pace-model.md`. The "leave-by" column was dropped (provably identical to
+the cut-off under cut-off anchoring). Original pitch kept below for the record.
 
 **The question it answers:** in a race where *miss one cut-off = out*, "how much
 cushion do I have?" matters more than "where am I."
@@ -77,4 +84,4 @@ if wanted.
 - **Data-freshness cue above the fold.** The footer carries the data window, but
   a stale-data glance-check near the top of the dashboard would help.
 - **"You are here" in distance terms on the course page** for race-morning
-  reading — the pacing tool (idea 1) also solves this.
+  reading — solved by the pace planner (idea 1, shipped).

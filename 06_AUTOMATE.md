@@ -1,5 +1,7 @@
 # 06_AUTOMATE — Phase 6 delegation prompt
 
+> **Superseded in part (2026-07-16):** `refresh.yml` no longer runs `claude -p` — the headless pipeline is now the deterministic `node scripts/refresh.mjs` (zero API tokens, no `ANTHROPIC_API_KEY` secret needed), and per-PR preview deployments were added via `pr-preview.yml`. The workflow files and PUBLISHING.md are the live truth; this prompt records the original design.
+
 ## Prompt → automation-smith (general-purpose, sonnet)
 
 Create the CI/publish layer for this repo. Read CLAUDE.md and DECISIONS.md first. Deliverables:

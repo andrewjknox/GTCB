@@ -1,5 +1,7 @@
 # 00_HANDOVER — GTCB Dashboard Pipeline
 
+> **Historical document** — this is the original build spec, executed 2026-07-09 (see DECISIONS.md). It is kept as the record of what was asked for; **CLAUDE.md is the live source of truth** and wins wherever they differ. Known drift since the build: Walk is excluded from on-foot sport types (2026-07-13); phases are Peak W17–19 / Taper W20–22 (DECISIONS.md #13); plan.json targets have been hand-tuned and gained `tof_target_h` + `focus`; a fifth agent (report-agent + Gate R, weekly debriefs) and a deterministic zero-token routine-refresh path (`scripts/refresh.mjs`, 2026-07-16) were added; the site is live at andrewjknox.github.io/gtcb (knoxy.com wiring still pending, see PUBLISHING.md); invariants 3b/3c (minified JS, inline data) were added.
+
 ## ⚡ Bootstrap instruction (read this first, Claude)
 
 This file is a complete build spec. On receiving the instruction *"Read 00_HANDOVER.md and build the project"*, work through **all phases sequentially and autonomously** in this session. Rules of engagement:
